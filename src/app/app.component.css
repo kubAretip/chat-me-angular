@@ -1,0 +1,13 @@
+#layout {
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 40em) {
+
+  #layout {
+    padding-left: 500px;
+    position: relative;
+  }
+}
+
