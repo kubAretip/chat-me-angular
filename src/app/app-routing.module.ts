@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {HomeComponent} from './modules/home/home.component';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
 import {SignUpComponent} from './modules/sign-up/sign-up.component';
+import {DashboardComponent} from './modules/dashboard/dashboard.component';
 
 const routes: Routes = [
 
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: SignUpComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
     path: '',

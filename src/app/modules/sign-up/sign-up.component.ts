@@ -1,4 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../shared/services/auth.service';
+import {first} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -7,10 +11,37 @@ import {Component, OnInit} from '@angular/core';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor() {
+  loginForm: FormGroup;
+  error: '';
+
+  constructor(private authService: AuthService,
+              private router: Router) {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+
   }
 
   ngOnInit(): void {
+    this.initLoginForm();
   }
 
+  initLoginForm() {
+    this.loginForm = new FormGroup({
+      login: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+    });
+  }
+
+  loginProcess() {
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value)
+        .pipe(first())
+        .subscribe(result => {
+          this.router.navigate(['/']);
+        }, error => {
+          console.log(error);
+        });
+    }
+  }
 }

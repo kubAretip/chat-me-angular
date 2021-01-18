@@ -6,6 +6,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {SharedModule} from './shared/shared.module';
 import {HomeModule} from './modules/home/home.module';
 import {SignUpModule} from './modules/sign-up/sign-up.module';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,10 @@ import {SignUpModule} from './modules/sign-up/sign-up.module';
     AppRoutingModule,
     SharedModule,
     HomeModule,
-    SignUpModule
+    SignUpModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

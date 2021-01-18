@@ -1,156 +1,110 @@
-/*
- * -- HELPER STYLES --
- * Over-riding some of the .pure-button styles to make my buttons look unique
- */
-.primary-button,
-.secondary-button {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  border-radius: 20px;
-}
-
-.primary-button {
+/* Links */
+a,
+a:focus,
+a:hover {
   color: #fff;
-  background: #1b98f8;
-  margin: 1em 0;
 }
 
-.secondary-button {
-  background: #fff;
-  border: 1px solid #ddd;
-  color: #666;
-  padding: 0.5em 2em;
-  font-size: 80%;
-}
-
-#list, #main {
-  margin: 0;
-  padding: 0;
-}
-
-/* Email Item Styles */
-.email-item {
-  padding: 0.9em 1em;
-  border-bottom: 1px solid #ddd;
-  border-left: 6px solid transparent;
-}
-
-.email-avatar {
-  border-radius: 3px;
-  margin-right: 0.5em;
-}
-
-.email-name, .email-subject {
-  margin: 0;
-}
-
-.email-name {
-  text-transform: uppercase;
-  color: #999;
-}
-
-.email-desc {
-  font-size: 80%;
-  margin: 0.4em 0;
-}
-
-.email-item-selected {
-  background: #eee;
-}
-
-.email-item-unread {
-  border-left: 6px solid #1b98f8;
-}
-
-/* Email Content Styles */
-.email-content-header, .email-content-body, .email-content-footer {
-  padding: 1em 2em;
-}
-
-.email-content-header {
-  border-bottom: 1px solid #ddd;
-}
-
-.email-content-title {
-  margin: 0.5em 0 0;
-}
-
-.email-content-subtitle {
-  font-size: 1em;
-  margin: 0;
-  font-weight: normal;
-}
-
-.email-content-subtitle span {
-  color: #999;
-}
-
-.email-content-controls {
-  margin-top: 2em;
-  text-align: right;
-}
-
-.email-content-controls .secondary-button {
-  margin-bottom: 0.3em;
-}
-
-.email-avatar {
-  width: 40px;
-  height: 40px;
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: .05rem solid #fff;
 }
 
 
 /*
- * -- TABLET (AND UP) MEDIA QUERIES --
- * On tablets and other medium-sized devices, we want to customize some
- * of the mobile styles.
+ * Base structure
  */
-@media (min-width: 40em) {
+:host {
+  height: 100%;
 
-  #list {
-    margin-left: -350px;
-    width: 100%;
-    height: 33%;
-    border-bottom: 1px solid #ddd;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    overflow: auto;
-  }
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+}
 
-  #main {
-    position: fixed;
-    top: 33%;
-    right: 0;
-    bottom: 0;
-    left: 150px;
-    overflow: auto;
-    width: auto; /* so that it's not 100% */
-  }
+.home-container{
+  background-image: url("src/assets/img/home_cover.jpg");
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
+.cover-container {
+  max-width: 42em;
 }
 
 /*
- * -- DESKTOP (AND UP) MEDIA QUERIES --
- * On desktops and other large-sized devices, we want to customize some
- * of the mobile styles.
+ * Header
  */
-@media (min-width: 60em) {
+.masthead {
+  margin-bottom: 2rem;
+}
 
-  /* This will take up the entire height, and be a little thinner */
-  #list {
-    margin-left: -350px;
-    width: 350px;
-    height: 100%;
-    border-right: 1px solid #ddd;
+.masthead-brand {
+  margin-bottom: 0;
+}
+
+.nav-masthead .nav-link {
+  padding: .25rem 0;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+@media (min-width: 48em) {
+  .masthead-brand {
+    float: left;
   }
 
-  /* This will now take up it's own column, so don't need position: fixed; */
-  #main {
-    position: static;
-    margin: 0;
-    padding: 0;
+  .nav-masthead {
+    float: right;
   }
 }
 
+
+/*
+ * Cover
+ */
+.cover {
+  padding: 0 1.5rem;
+}
+
+.cover .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+}
+
+
+/*
+ * Footer
+ */
+.mastfoot {
+  color: rgba(255, 255, 255, .5);
+}
