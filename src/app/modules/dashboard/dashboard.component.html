@@ -17,7 +17,10 @@
           </div>
         </div>
         <div class="inbox_chat">
-          <app-friend></app-friend>
+          <div *ngFor="let conversation of conversationList">
+            <app-friend [conversation]="conversation" [conversationId]="activeConversationId"
+                        (click)="enterConversation(conversation.id)"></app-friend>
+          </div>
         </div>
         <div class="bottom_settings">
           <div class="bottom_settings_left">
@@ -31,7 +34,9 @@
 
       <div class="mesgs">
         <div class="msg_history">
-          <app-message></app-message>
+          <div *ngFor="let message of messageList">
+            <app-message [message]="message"></app-message>
+          </div>
         </div>
 
         <div class="type_msg">

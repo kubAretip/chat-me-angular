@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {ConversationService} from '../../../shared/services/conversation.service';
-import {first} from 'rxjs/operators';
+import {Component, Input, OnInit} from '@angular/core';
 import {Conversation} from '../../../shared/models/conversation';
 
 @Component({
@@ -10,16 +8,17 @@ import {Conversation} from '../../../shared/models/conversation';
 })
 export class FriendComponent implements OnInit {
 
-  conversationList: Conversation[];
+  @Input('conversation')
+  conversation: Conversation;
 
-  constructor(private conversationService: ConversationService) {
+  @Input('conversationId')
+  conversationId: number;
+
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.conversationService.getConversation().pipe(first())
-      .subscribe(result => {
-        this.conversationList = result;
-      });
+
   }
 
 }

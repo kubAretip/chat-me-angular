@@ -30,7 +30,7 @@ export class AuthService {
   login(data): Observable<any> {
     const helper = new JwtHelperService();
 
-    return this.http.post(`${baseUrl}/api/authenticate`, data)
+    return this.http.post(`${baseUrl}/authenticate`, data)
       .pipe(map(result => {
         const accessToken = JSON.parse(JSON.stringify(result)).access_token;
         const decodedToken = helper.decodeToken(accessToken);
@@ -50,6 +50,7 @@ export class AuthService {
     console.log('logout');
     localStorage.removeItem('token');
     localStorage.removeItem('token_type');
+    localStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
 

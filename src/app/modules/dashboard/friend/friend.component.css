@@ -1,11 +1,15 @@
-.chat_list {
-  border-bottom: 1px solid #c4c4c4;
-  margin: 0;
-  padding: 18px 16px 10px;
+.inactive_chat {
+  background: #ffffff;
 }
 
 .active_chat {
   background: #ebebeb;
+}
+
+.inactive_chat, .active_chat {
+  border-bottom: 1px solid #c4c4c4;
+  padding: 18px 16px 10px;
+  margin: 0;
 }
 
 .chat_people {

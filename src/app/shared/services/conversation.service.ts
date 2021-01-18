@@ -6,11 +6,12 @@ import {baseUrl} from '../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class ConversationService {
+
   constructor(private http: HttpClient) {
   }
 
   getConversation() {
-    return this.http.get<Conversation[]>(`${baseUrl}/api/conversations`);
+    return this.http.get<Conversation[]>(`${baseUrl}/conversations`);
   }
 
 }

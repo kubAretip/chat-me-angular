@@ -1,4 +1,5 @@
-<div class="chat_list active_chat" *ngFor="let conversation of conversationList">
+<div
+  [ngClass]="{'active_chat' : conversation.id == conversationId, 'inactive_chat' : conversation.id != conversationId}">
   <div class="chat_people">
     <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
     <div class="chat_ib">
