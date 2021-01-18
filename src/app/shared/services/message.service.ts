@@ -16,4 +16,14 @@ export class MessageService {
     return this.http.get<Message[]>(`${baseUrl}/messages?${params.toString()}`);
   }
 
+  getPreviousMessages(size, conversationId, beforeTime) {
+    const params = new HttpParams()
+      .set('size', size)
+      .set('conversation_id', conversationId)
+      .set('before_time', beforeTime);
+
+    return this.http.get<Message[]>(`${baseUrl}/messages?${params.toString()}`);
+  }
+
+
 }

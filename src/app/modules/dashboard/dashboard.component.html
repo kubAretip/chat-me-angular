@@ -18,7 +18,7 @@
         </div>
         <div class="inbox_chat">
           <div *ngFor="let conversation of conversationList">
-            <app-friend [conversation]="conversation" [conversationId]="activeConversationId"
+            <app-friend [conversation]="conversation" [conversationId]="currentConversationId"
                         (click)="enterConversation(conversation.id)"></app-friend>
           </div>
         </div>
@@ -33,7 +33,7 @@
       </div>
 
       <div class="mesgs">
-        <div class="msg_history">
+        <div class="msg_history" #messageContainer>
           <div *ngFor="let message of messageList">
             <app-message [message]="message"></app-message>
           </div>
@@ -41,9 +41,8 @@
 
         <div class="type_msg">
           <div class="input_msg_write">
-            <input type="text" class="write_msg" placeholder="Type a message"/>
-            <button class="msg_send_btn" type="button">
-            </button>
+            <input type="text" class="write_msg" placeholder="Type a message" #inputMessage/>
+            <button class="msg_send_btn" type="button" (click)="sentMessage(inputMessage.value)"></button>
           </div>
         </div>
 

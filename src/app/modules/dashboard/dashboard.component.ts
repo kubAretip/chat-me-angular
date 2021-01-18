@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
 import {ConversationService} from '../../shared/services/conversation.service';
@@ -6,33 +6,60 @@ import {first} from 'rxjs/operators';
 import {Conversation} from '../../shared/models/conversation';
 import {MessageService} from '../../shared/services/message.service';
 import {Message} from '../../shared/models/message';
+import {WsMessagesService} from '../../shared/services/ws-messages.service';
+import {AfterWebSocketConnected} from '../../shared/helpers/after-web-socket-connected';
+
+declare var $: any;
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterWebSocketConnected {
+
+  @ViewChild('inputMessage') inputMessage: ElementRef;
+  @ViewChild('messageContainer') messageContainer: ElementRef;
 
   conversationList: Conversation[];
   messageList: Message[];
-  activeConversationId: number;
-
+  currentConversationId: number;
+  currentConversation: Conversation;
 
   constructor(private authService: AuthService,
               private router: Router,
               private conversationService: ConversationService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private wsMessagesService: WsMessagesService) {
+    wsMessagesService.connect(authService.getToken(), this);
   }
 
   ngOnInit(): void {
     this.getUserConversations();
+    const that = this;
+    // tslint:disable-next-line:only-arrow-functions
+    $('.msg_history').scroll(function() {
+      if ($('.msg_history').scrollTop() === 0) {
+        that.previousMessages();
+      }
+    });
+
   }
 
   private getUserConversations() {
     this.conversationService.getConversation().pipe(first())
       .subscribe(result => {
         this.conversationList = result;
+      });
+  }
+
+  previousMessages() {
+    this.messageService.getPreviousMessages(10, this.currentConversation.id, this.messageList[0].time)
+      .subscribe(result => {
+        console.log(result);
+        result.forEach(message => {
+          this.messageList.unshift(message);
+        });
       });
   }
 
@@ -43,11 +70,38 @@ export class DashboardComponent implements OnInit {
 
   enterConversation(conversationId) {
     console.log(conversationId);
-    this.activeConversationId = conversationId;
+    this.currentConversation = this.conversationList.filter(value => value.id === conversationId)[0];
+    this.currentConversationId = this.currentConversation.id;
     this.messageService.getLastMessages(10, conversationId).pipe(first())
       .subscribe(result => {
         this.messageList = result;
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
       });
+  }
 
+  sentMessage(messageContent) {
+    const message = {
+      sender: this.authService.currentUserValue,
+      recipient: this.currentConversation.recipient,
+      content: messageContent,
+      time: new Date().toLocaleString().replace(',', '')
+    };
+    this.messageList.push(message);
+    this.wsMessagesService.sendMessage(message);
+    this.inputMessage.nativeElement.value = '';
+    this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+  }
+
+  wsAfterConnected() {
+    const that = this;
+    this.wsMessagesService.ws.subscribe('/user/' + this.authService.currentUserValue.id + '/queue/messages',
+      // tslint:disable-next-line:only-arrow-functions
+      function(message) {
+        let conversationMessage: Message;
+        conversationMessage = JSON.parse(message.body);
+        if (conversationMessage.conversationId === that.currentConversation.conversationWithId) {
+          that.messageList.push(conversationMessage);
+        }
+      });
   }
 }

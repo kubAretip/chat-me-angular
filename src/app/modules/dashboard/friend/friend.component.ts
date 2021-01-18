@@ -14,6 +14,8 @@ export class FriendComponent implements OnInit {
   @Input('conversationId')
   conversationId: number;
 
+
+
   constructor() {
   }
 
