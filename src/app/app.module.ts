@@ -8,6 +8,7 @@ import {HomeModule} from './modules/home/home.module';
 import {SignUpModule} from './modules/sign-up/sign-up.module';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DashboardModule} from './modules/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     SignUpModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DashboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

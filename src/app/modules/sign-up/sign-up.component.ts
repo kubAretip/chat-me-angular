@@ -17,7 +17,7 @@ export class SignUpComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router) {
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/dashboard']);
     }
 
   }
@@ -38,7 +38,7 @@ export class SignUpComponent implements OnInit {
       this.authService.login(this.loginForm.value)
         .pipe(first())
         .subscribe(result => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard']);
         }, error => {
           console.log(error);
         });

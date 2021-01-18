@@ -4,6 +4,7 @@ import {HomeComponent} from './modules/home/home.component';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
 import {SignUpComponent} from './modules/sign-up/sign-up.component';
 import {DashboardComponent} from './modules/dashboard/dashboard.component';
+import {AuthGuard} from './shared/helpers/auth.guard';
 
 const routes: Routes = [
 
@@ -17,7 +18,8 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '',
