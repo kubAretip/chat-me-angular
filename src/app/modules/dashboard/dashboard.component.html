@@ -6,7 +6,7 @@
       <div class="inbox_people">
         <div class="headind_srch">
           <div class="recent_heading">
-            <h4>Recent</h4>
+            <h4>Friends</h4>
           </div>
           <div class="srch_bar">
             <div class="stylish-input-group">
@@ -17,11 +17,11 @@
           </div>
         </div>
         <div class="inbox_chat">
-        <app-friend></app-friend>
+          <app-friend></app-friend>
         </div>
         <div class="bottom_settings">
           <div class="bottom_settings_left">
-            <button>Logout</button>
+            <button type="button" (click)="logout()">Logout</button>
           </div>
           <div class="bottom_settings_right">
             <button>Settings</button>
@@ -29,9 +29,7 @@
         </div>
       </div>
 
-
       <div class="mesgs">
-
         <div class="msg_history">
           <app-message></app-message>
         </div>

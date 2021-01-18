@@ -23,6 +23,10 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
   login(data): Observable<any> {
     const helper = new JwtHelperService();
 

@@ -6,9 +6,10 @@ import {AppRoutingModule} from './app-routing.module';
 import {SharedModule} from './shared/shared.module';
 import {HomeModule} from './modules/home/home.module';
 import {SignUpModule} from './modules/sign-up/sign-up.module';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardModule} from './modules/dashboard/dashboard.module';
+import {TokenInterceptor} from './shared/helpers/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import {DashboardModule} from './modules/dashboard/dashboard.module';
     ReactiveFormsModule,
     DashboardModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
