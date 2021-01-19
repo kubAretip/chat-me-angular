@@ -7,6 +7,8 @@ import {AuthService} from '../../shared/services/auth.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  displayAccountSettings = true;
+  displayPasswordSettings = false;
 
   constructor(private authService: AuthService) {
   }
@@ -16,5 +18,15 @@ export class SettingsComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  accountSettings() {
+    this.displayAccountSettings = true;
+    this.displayPasswordSettings = false;
+  }
+
+  passwordSettings() {
+    this.displayAccountSettings = false;
+    this.displayPasswordSettings = true;
   }
 }

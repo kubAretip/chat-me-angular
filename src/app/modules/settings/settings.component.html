@@ -13,83 +13,20 @@
       <h1 class="cover-heading">Settings</h1>
       <ul class="nav justify-content-center" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" href="#account" data-toggle="tab" role="tab">Account information</a>
+          <a class="nav-link active" href="#accountSettings" (click)="accountSettings()" data-toggle="tab" role="tab">Account information</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#change-password" data-toggle="tab" role="tab">Change password</a>
+          <a class="nav-link" href="#passwordSettings" (click)="passwordSettings()" data-toggle="tab" role="tab">Change password</a>
         </li>
       </ul>
       <div class="tab-content text-left" id="myTabContent">
-        <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
-          <form>
-            <div class="form-group row">
-              <label for="staticLogin" class="col-sm-2 col-form-label">Login</label>
-              <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticLogin">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-              <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext text-white" id="staticEmail"
-                       value="email@example.com">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="first-name" class="col-sm-2 col-form-label">First name</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" id="first-name" placeholder="First name">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="last-name" class="col-sm-2 col-form-label">Last name</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" id="last-name" placeholder="Last name">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="invitation-code" class="col-sm-2 col-form-label">Invitation code</label>
-              <div class="col-sm-7">
-                <input type="password" class="form-control" id="invitation-code" placeholder="Invitation code">
-              </div>
-              <div class="col-sm-3">
-                <p class="lead text-center">
-                  <a href="#" class="btn  btn-secondary">Generate new</a>
-                </p>
-              </div>
-            </div>
-            <p class="lead text-center">
-              <a href="#" class="btn  btn-secondary">Save changes</a>
-            </p>
-          </form>
-
+        <div *ngIf="displayAccountSettings">
+          <app-account></app-account>
         </div>
-
-        <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
-          <form>
-            <div class="form-group">
-              <label for="current-password">Current password</label>
-              <input type="password" class="form-control" id="current-password" placeholder="Current password">
-              <small id="info-current-password" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
-            </div>
-            <div class="form-group">
-              <label for="new-password">New password</label>
-              <input type="password" class="form-control" id="new-password" placeholder="New password">
-              <small id="info-new-password" class="form-text text-danger">We'll never share your email with anyone
-                else.</small>
-            </div>
-            <div class="form-group">
-              <label for="confirm-new-password">Confirm new password</label>
-              <input type="password" class="form-control" id="confirm-new-password" placeholder="Confirm new password">
-            </div>
-            <p class="lead text-center">
-              <a href="#" class="btn  btn-secondary">Save</a>
-            </p>
-          </form>
+        <div *ngIf="displayPasswordSettings">
+          <app-change-password></app-change-password>
         </div>
       </div>
-
     </main>
 
     <footer class="mastfoot mt-auto">

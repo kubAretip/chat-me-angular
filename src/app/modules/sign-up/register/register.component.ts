@@ -52,8 +52,6 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/login'], {queryParams: {registration: 'success'}});
         }, errorObject => {
 
-          console.log(errorObject);
-
           if (errorObject.status === 400) {
             const violationsErrors = errorObject.error.violations;
             violationsErrors.forEach(error => {

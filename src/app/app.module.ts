@@ -10,18 +10,19 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardModule} from './modules/dashboard/dashboard.module';
 import {TokenInterceptor} from './shared/helpers/token.interceptor';
-import { SettingsComponent } from './modules/settings/settings.component';
+import {SettingsComponent} from './modules/settings/settings.component';
+import {SettingsModule} from './modules/settings/settings.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SettingsComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedModule,
     HomeModule,
+    SettingsModule,
     SignUpModule,
     HttpClientModule,
     FormsModule,
