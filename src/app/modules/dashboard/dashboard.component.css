@@ -132,4 +132,10 @@ img {
 .msg_history {
   height: 516px;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.msg_history::-webkit-scrollbar {
+  display: none;
 }

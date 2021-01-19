@@ -18,6 +18,10 @@ const routes: Routes = [
     component: SignUpComponent
   },
   {
+    path: 'register',
+    component: SignUpComponent
+  },
+  {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard]

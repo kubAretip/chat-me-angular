@@ -1,0 +1,46 @@
+<div class="login-content">
+  <form [formGroup]="loginForm" (ngSubmit)="loginProcess()">
+    <img src="assets/img/login_avatar.svg">
+    <h2 class="title">Sign in</h2>
+    <div *ngIf="afterRegistration" class="alert alert-primary mt-3 mb-0">
+      Please check our mail box and confirm your email address.
+    </div>
+    <div *ngIf="afterActivation" class="alert alert-primary mt-3 mb-0">
+      Email confirmed. You can log in.
+    </div>
+    <div class="input-div one">
+      <div class="i">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="div">
+        <input type="text" class="input" placeholder="Login or Email" formControlName="login">
+      </div>
+    </div>
+    <div
+      *ngIf="loginForm.controls['login'].invalid && (loginForm.controls['login'].dirty || loginForm.controls['login'].touched)">
+      <small class="form-text text-danger" *ngIf="loginForm.controls['login'].errors.required">
+        Login is required.
+      </small>
+    </div>
+    <div class="input-div pass">
+      <div class="i">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="div">
+        <input type="password" class="input" placeholder="Password" formControlName="password">
+      </div>
+    </div>
+    <div
+      *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+      <small class="form-text text-danger" *ngIf="loginForm.controls['password'].errors.required">
+        Password is required.
+      </small>
+    </div>
+    <div class="register-label">
+      <span>No account yet? <a routerLink="/register">Sign up!</a></span>
+    </div>
+
+    <input type="submit" class="btn" value="Login">
+    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+  </form>
+</div>

@@ -1,0 +1,109 @@
+<div class="login-content">
+  <form [formGroup]="registerForm" (ngSubmit)="registerProcess()">
+    <img src="assets/img/register_avatar.svg">
+    <h2 class="title">Sign up</h2>
+    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+    <div class="input-div">
+      <div class="i">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="div">
+        <input type="text" class="input" placeholder="Login" formControlName="login">
+      </div>
+    </div>
+    <div
+      *ngIf="registerForm.controls['login'].invalid && (registerForm.controls['login'].dirty || registerForm.controls['login'].touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.controls['login'].errors.required">
+        Login is required.
+      </small>
+    </div>
+
+
+    <div class="input-div">
+      <div class="i">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="div">
+        <input type="email" class="input" placeholder="Email" formControlName="email">
+      </div>
+    </div>
+    <div
+      *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.controls['email'].errors.required">
+        Email is required.
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.controls['email'].errors.validation">
+        {{emailValidationError}}
+      </small>
+    </div>
+
+    <div class="input-div">
+      <div class="i">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="div">
+        <input type="text" class="input" placeholder="First name" formControlName="firstName">
+      </div>
+    </div>
+    <div
+      *ngIf="registerForm.controls['firstName'].invalid && (registerForm.controls['firstName'].dirty || registerForm.controls['firstName'].touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.controls['firstName'].errors.required">
+        First name is required.
+      </small>
+    </div>
+
+    <div class="input-div">
+      <div class="i">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="div">
+        <input type="text" class="input" placeholder="Last name" formControlName="lastName">
+      </div>
+    </div>
+    <div
+      *ngIf="registerForm.controls['lastName'].invalid && (registerForm.controls['lastName'].dirty || registerForm.controls['lastName'].touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.controls['lastName'].errors.required">
+        Last name is required.
+      </small>
+    </div>
+
+    <div class="input-div">
+      <div class="i">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="div">
+        <input type="password" class="input" placeholder="Password" formControlName="password">
+      </div>
+    </div>
+    <div
+      *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].dirty || registerForm.controls['password'].touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.controls['password'].errors.required">
+        Password is required.
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.controls['password'].errors.validation">
+        {{passwordValidationError}}
+      </small>
+    </div>
+
+    <div class="input-div">
+      <div class="i">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="div">
+        <input type="password" class="input" placeholder="Confirm password" formControlName="confirmPassword">
+      </div>
+    </div>
+    <div
+      *ngIf="registerForm.controls['confirmPassword'].invalid && (registerForm.controls['confirmPassword'].dirty || registerForm.controls['confirmPassword'].touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.controls['confirmPassword'].errors.required">
+        Confirm password.
+      </small>
+    </div>
+
+    <div class="register-label">
+      <span>Already have an account? <a routerLink="/login">Login here!</a></span>
+    </div>
+    <input type="submit" class="btn" value="Create account">
+
+  </form>
+</div>

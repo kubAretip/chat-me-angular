@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../shared/services/auth.service';
-import {first} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import {AccountService} from '../../shared/services/account.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,38 +10,44 @@ import {Router} from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
 
-  loginForm: FormGroup;
-  error = '';
+  afterRegistration = false;
+  afterActivation = false;
+  currentUrl = '';
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private authService: AuthService,
+              private accountService: AccountService) {
+
     if (this.authService.currentUserValue) {
       this.router.navigate(['/dashboard']);
     }
-
   }
 
   ngOnInit(): void {
-    this.initLoginForm();
+    this.activatedRoute.url.subscribe(value => {
+      this.currentUrl = value[0].path;
+    });
+
+    this.activatedRoute.queryParams.subscribe(param => {
+      if (param.registration) {
+        this.afterRegistration = true;
+      }
+      if (param.data) {
+        this.activateAccount(param.data);
+      }
+
+    });
+
   }
 
-  initLoginForm() {
-    this.loginForm = new FormGroup({
-      login: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+  activateAccount(activationKey) {
+    this.accountService.activateUser(activationKey).subscribe(result => {
+      this.router.navigate(['/login']);
+      this.afterActivation = true;
+    }, error => {
+      console.log(error);
     });
   }
 
-  loginProcess() {
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value)
-        .pipe(first())
-        .subscribe(result => {
-          this.router.navigate(['/dashboard']);
-        }, errorResponse => {
-          this.loginForm.reset('');
-          this.error = JSON.parse(JSON.stringify(errorResponse)).error.details;
-        });
-    }
-  }
 }
