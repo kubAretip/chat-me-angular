@@ -8,13 +8,27 @@
 
 .inactive_chat, .active_chat {
   border-bottom: 1px solid #c4c4c4;
-  padding: 18px 16px 10px;
+
   margin: 0;
+}
+
+.chat_people_details {
+  padding: 18px 16px 10px;
 }
 
 .chat_people {
   overflow: hidden;
   clear: both;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat_notification {
+  position: relative;
+  height: 83px;
+  width: 3px;
+  float: left;
+  background-color: #00B0FF;
 }
 
 .chat_img {

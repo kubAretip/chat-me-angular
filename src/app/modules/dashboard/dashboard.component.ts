@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
 import {ConversationService} from '../../shared/services/conversation.service';
@@ -16,11 +16,12 @@ declare var $: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, AfterWebSocketConnected {
+export class DashboardComponent implements OnInit, AfterWebSocketConnected, AfterViewInit {
 
   @ViewChild('inputMessage') inputMessage: ElementRef;
   @ViewChild('messageContainer') messageContainer: ElementRef;
 
+  newMessage: Message = null;
   conversationList: Conversation[];
   messageList: Message[];
   currentConversationId: number;
@@ -32,6 +33,10 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
               private messageService: MessageService,
               private wsMessagesService: WsMessagesService) {
     wsMessagesService.connect(authService.getToken(), this);
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   ngOnInit(): void {
@@ -50,13 +55,13 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     this.conversationService.getConversation().pipe(first())
       .subscribe(result => {
         this.conversationList = result;
+        this.enterConversation(result[0].id);
       });
   }
 
   previousMessages() {
     this.messageService.getPreviousMessages(10, this.currentConversation.id, this.messageList[0].time)
       .subscribe(result => {
-        console.log(result);
         result.forEach(message => {
           this.messageList.unshift(message);
         });
@@ -69,13 +74,12 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   enterConversation(conversationId) {
-    console.log(conversationId);
     this.currentConversation = this.conversationList.filter(value => value.id === conversationId)[0];
     this.currentConversationId = this.currentConversation.id;
     this.messageService.getLastMessages(10, conversationId).pipe(first())
       .subscribe(result => {
         this.messageList = result;
-        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+        console.log(this.messageContainer.nativeElement.scrollHeight);
       });
   }
 
@@ -84,11 +88,13 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
       sender: this.authService.currentUserValue,
       recipient: this.currentConversation.recipient,
       content: messageContent,
+      conversationId: this.currentConversationId,
       time: new Date().toLocaleString().replace(',', '')
     };
     this.messageList.push(message);
     this.wsMessagesService.sendMessage(message);
     this.inputMessage.nativeElement.value = '';
+    this.newMessage = message;
     this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
   }
 
@@ -99,6 +105,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
       function(message) {
         let conversationMessage: Message;
         conversationMessage = JSON.parse(message.body);
+        that.newMessage = conversationMessage;
         if (conversationMessage.conversationId === that.currentConversation.conversationWithId) {
           that.messageList.push(conversationMessage);
         }

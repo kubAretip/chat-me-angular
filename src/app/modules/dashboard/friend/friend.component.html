@@ -1,12 +1,30 @@
-<div
-  [ngClass]="{'active_chat' : conversation.id == conversationId, 'inactive_chat' : conversation.id != conversationId}">
-  <div class="chat_people">
-    <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
-    <div class="chat_ib">
-      <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}
-        <span class="chat_date">Dec 25</span></h5>
-      <p>Test, which is a new approach to have all solutions astrology under one roof.</p>
+<div>
+
+  <div
+    [ngClass]="{'active_chat' : conversation.id == currentConversationId, 'inactive_chat' : conversation.id != currentConversationId}">
+    <div class="chat_people">
+      <div class="chat_people_details">
+        <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
+        <div class="chat_ib">
+          <ng-container
+            *ngIf="newMessage !=null && (newMessage.conversationId == conversation.id || newMessage.conversationId == conversation.conversationWithId); then newMes; else lastMes">
+          </ng-container>
+
+          <ng-template #newMes>
+            <h5><span class="chat_date">{{newMessage.time}}</span></h5>
+            <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</h5>
+            <p>{{newMessage.content}}</p>
+          </ng-template>
+
+          <ng-template #lastMes>
+            <h5><span class="chat_date">{{lastMessage.time}}</span></h5>
+            <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</h5>
+            <p>{{lastMessage.content}}</p>
+          </ng-template>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 

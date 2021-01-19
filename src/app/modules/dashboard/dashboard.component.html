@@ -18,8 +18,8 @@
         </div>
         <div class="inbox_chat">
           <div *ngFor="let conversation of conversationList">
-            <app-friend [conversation]="conversation" [conversationId]="currentConversationId"
-                        (click)="enterConversation(conversation.id)"></app-friend>
+            <app-friend [conversation]="conversation" [currentConversationId]="currentConversationId"
+                        (click)="enterConversation(conversation.id)" [newMessage]="newMessage"></app-friend>
           </div>
         </div>
         <div class="bottom_settings">
@@ -27,7 +27,8 @@
             <button type="button" (click)="logout()">Logout</button>
           </div>
           <div class="bottom_settings_right">
-            <button>Settings</button>
+            <button routerLink="/settings">Add new friend</button>
+            <button routerLink="/settings">Settings</button>
           </div>
         </div>
       </div>
