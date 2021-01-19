@@ -61,7 +61,7 @@ img {
 }
 
 .recent_heading h4 {
-  color: #05728f;
+  color: #00B0FF;
   font-size: 21px;
   margin: auto;
 }
@@ -112,7 +112,7 @@ img {
 }
 
 .msg_send_btn {
-  background: #05728f none repeat scroll 0 0;
+  background: #00B0FF none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;

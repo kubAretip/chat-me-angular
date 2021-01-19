@@ -5,13 +5,15 @@ import {MessageComponent} from './message/message.component';
 import { FriendComponent } from './friend/friend.component';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import { FriendRequestComponent } from './friend-request/friend-request.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     MessageComponent,
-    FriendComponent
+    FriendComponent,
+    FriendRequestComponent
   ],
   imports: [
     CommonModule,

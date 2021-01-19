@@ -8,6 +8,10 @@ import {MessageService} from '../../shared/services/message.service';
 import {Message} from '../../shared/models/message';
 import {WsMessagesService} from '../../shared/services/ws-messages.service';
 import {AfterWebSocketConnected} from '../../shared/helpers/after-web-socket-connected';
+import {AccountService} from '../../shared/services/account.service';
+import {User} from '../../shared/models/user';
+import {FriendService} from '../../shared/services/friend.service';
+import {FriendRequest} from '../../shared/models/friend-request';
 
 declare var $: any;
 
@@ -23,15 +27,21 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
 
   newMessage: Message = null;
   conversationList: Conversation[];
+  friendRequestList: FriendRequest[];
   messageList: Message[];
   currentConversationId: number;
   currentConversation: Conversation;
+  activeFriendsList = true;
+  activeFriendRequestList = false;
+  user: User;
 
   constructor(private authService: AuthService,
               private router: Router,
               private conversationService: ConversationService,
               private messageService: MessageService,
-              private wsMessagesService: WsMessagesService) {
+              private wsMessagesService: WsMessagesService,
+              private accountService: AccountService,
+              private friendService: FriendService) {
     wsMessagesService.connect(authService.getToken(), this);
   }
 
@@ -48,8 +58,9 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
         that.previousMessages();
       }
     });
-
+    this.getUserInformation();
   }
+
 
   private getUserConversations() {
     this.conversationService.getConversation().pipe(first())
@@ -110,5 +121,25 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
           that.messageList.push(conversationMessage);
         }
       });
+  }
+
+  showFriendRequestList() {
+    this.activeFriendRequestList = true;
+    this.activeFriendsList = false;
+
+    this.friendService.getUserFriendRequests().subscribe(result => {
+      this.friendRequestList = result;
+    });
+  }
+
+  showFriendList() {
+    this.activeFriendRequestList = false;
+    this.activeFriendsList = true;
+  }
+
+  private getUserInformation() {
+    this.accountService.getUser().subscribe(user => {
+      this.user = user;
+    });
   }
 }

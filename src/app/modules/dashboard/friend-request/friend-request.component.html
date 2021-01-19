@@ -1,0 +1,20 @@
+<div>
+  <div class="chat_people">
+    <div class="chat_people_details">
+      <div class="chat_ib">
+        <div *ngIf="currentUserId == friendRequest.sender.id">
+          {{'You send the invitation to ' + friendRequest.recipient.firstName + ' ' + friendRequest.recipient.lastName }}
+          <button>Cancel</button>
+        </div>
+
+        <div *ngIf="currentUserId != friendRequest.sender.id">
+          {{'New invitation from ' + friendRequest.sender.firstName + ' ' + friendRequest.sender.lastName }}
+          <button>Accept</button>
+          <button>Reject</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
