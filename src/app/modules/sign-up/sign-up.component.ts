@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 export class SignUpComponent implements OnInit {
 
   loginForm: FormGroup;
-  error: '';
+  error = '';
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -39,8 +39,9 @@ export class SignUpComponent implements OnInit {
         .pipe(first())
         .subscribe(result => {
           this.router.navigate(['/dashboard']);
-        }, error => {
-          console.log(error);
+        }, errorResponse => {
+          this.loginForm.reset('');
+          this.error = JSON.parse(JSON.stringify(errorResponse)).error.details;
         });
     }
   }
