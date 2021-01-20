@@ -163,10 +163,13 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
 
   showNotificationMessage(message) {
+
     this.notificationMessage = message;
     this.isNotificationVisible = true;
+    console.log(this.isNotificationVisible);
     setTimeout(() => {
       this.isNotificationVisible = false;
+      console.log(this.isNotificationVisible);
     }, 2000);
   }
 

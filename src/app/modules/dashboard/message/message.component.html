@@ -1,13 +1,65 @@
-<div class="incoming_msg" *ngIf="currentUserId!=message.sender.id">
-  <div class="incoming_msg_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
-  <div class="received_msg">
-    <div class="received_withd_msg">
-      <p>{{message.content}}</p>
-      <span class="time_date">{{message.time}}</span></div>
+<!--<div class="incoming_msg" *ngIf="currentUserId!=message.sender.id">-->
+<!--  <div class="incoming_msg_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>-->
+<!--  <div class="received_msg">-->
+<!--    <div class="received_withd_msg">-->
+<!--      <p>{{message.content}}</p>-->
+<!--      <span class="time_date">{{message.time}}</span></div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div class="outgoing_msg" *ngIf="currentUserId==message.sender.id">-->
+<!--  <div class="sent_msg">-->
+<!--    <p>{{message.content}}</p>-->
+<!--    <span class="time_date">{{message.time}}</span></div>-->
+<!--</div>-->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-8 incoming-message-container">
+        <div class="row">
+          <div class="col-2 incoming-message-avatar">
+            <img src="/assets/img/user_avatar.svg" alt="">
+          </div>
+          <div class="col-10 incoming-message-content">
+            <div class="incoming-message-text">
+              <p class="shadow p-3 mb-5 rounded">?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a</p>
+            </div>
+            <div class="incoming-message-date">
+              16:29:12 14.02.2020
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
   </div>
-</div>
-<div class="outgoing_msg" *ngIf="currentUserId==message.sender.id">
-  <div class="sent_msg">
-    <p>{{message.content}}</p>
-    <span class="time_date">{{message.time}}</span></div>
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-8 outgoing-message-container">
+        <div class="row">
+          <div class="col-12">
+            <div class="outgoing-message-text">
+              <p class="shadow p-3 mb-5 rounded"> a sda dsa dsa ds a dsa sadDobrze a tam ? Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam
+                ?Dobrze a tam ?Dobrze a tam ?Dobrze a tam ?</p>
+            </div>
+            <div class="outgoing-message-date">
+              16:30:31 14.02.2020
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

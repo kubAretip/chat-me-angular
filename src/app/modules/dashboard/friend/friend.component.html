@@ -1,29 +1,45 @@
-<div>
-  <div
-    [ngClass]="{'active_chat' : conversation.id == currentConversationId, 'inactive_chat' : conversation.id != currentConversationId}">
-    <div class="chat_people">
-      <div class="chat_people_details">
-        <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
-        <div class="chat_ib">
-          <ng-container
-            *ngIf="newMessage !=null && (newMessage.conversationId == conversation.id || newMessage.conversationId == conversation.conversationWithId); then newMes; else lastMes">
-          </ng-container>
+<!--<div>-->
+<!--  <div-->
+<!--    [ngClass]="{'active_chat' : conversation.id == currentConversationId, 'inactive_chat' : conversation.id != currentConversationId}">-->
+<!--    <div class="chat_people">-->
+<!--      <div class="chat_people_details">-->
+<!--        <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>-->
+<!--        <div class="chat_ib">-->
+<!--          <ng-container-->
+<!--            *ngIf="newMessage !=null && (newMessage.conversationId == conversation.id || newMessage.conversationId == conversation.conversationWithId); then newMes; else lastMes">-->
+<!--          </ng-container>-->
 
-          <ng-template #newMes>
-            <h5><span class="chat_date">{{newMessage.time}}</span></h5>
-            <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</h5>
-            <p>{{newMessage.content}}</p>
-          </ng-template>
+<!--          <ng-template #newMes>-->
+<!--            <h5><span class="chat_date">{{newMessage.time}}</span></h5>-->
+<!--            <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</h5>-->
+<!--            <p>{{newMessage.content}}</p>-->
+<!--          </ng-template>-->
 
-          <ng-template #lastMes>
-            <h5><span class="chat_date">{{lastMessage.time}}</span></h5>
-            <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</h5>
-            <p>{{lastMessage.content}}</p>
-          </ng-template>
+<!--          <ng-template #lastMes>-->
+<!--            <h5><span class="chat_date">{{lastMessage.time}}</span></h5>-->
+<!--            <h5>{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</h5>-->
+<!--            <p>{{lastMessage.content}}</p>-->
+<!--          </ng-template>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="row">
+  <div class="col-sm-12" style="border-bottom: 1px solid #c4c4c4;">
+    <div class="row" style="padding: 5px">
+      <div class="col-2" style=" margin: auto;">
+        <img src="/assets/img/user_avatar.svg" alt="" style="max-width: 35px">
+      </div>
+      <div class="col-7 ">
+        <div class="row ">
+          <div class="col-12 " style="font-size: 22px">Jakub Pitera</div>
+          <div class="col-12 " style="font-size: 13px">Cześć co tam u Ciebie ?</div>
         </div>
       </div>
+      <div class="col-lg-3 text-right" style="font-size: 13px;">12.05.2020</div>
     </div>
+
   </div>
 </div>
-
 
