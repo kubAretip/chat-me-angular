@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
 import {ConversationService} from '../../shared/services/conversation.service';
@@ -20,20 +20,23 @@ declare var $: any;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, AfterWebSocketConnected, AfterViewInit {
+export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
   @ViewChild('inputMessage') inputMessage: ElementRef;
   @ViewChild('messageContainer') messageContainer: ElementRef;
-
-  newMessage: Message = null;
-  conversationList: Conversation[];
-  friendRequestList: FriendRequest[];
-  messageList: Message[];
-  currentConversationId: number;
-  currentConversation: Conversation;
+  @ViewChild('inviteCode') inviteCode: ElementRef;
+  @ViewChild('notification') notification: ElementRef;
+  notificationMessage = '';
   activeFriendsList = true;
   activeFriendRequestList = false;
-  user: User;
+  isNotificationVisible = false;
+  currentConversation: Conversation;
+  newMessage: Message = null;
+  conversationList: Conversation[] = [];
+  friendRequestList: FriendRequest[];
+  messageList: Message[];
+  currentConversationId: number = null;
+  user = {} as User;
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -45,12 +48,15 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
     wsMessagesService.connect(authService.getToken(), this);
   }
 
-  ngAfterViewInit(): void {
-
-  }
 
   ngOnInit(): void {
     this.getUserConversations();
+    this.configureChatScroll();
+    this.getUserInformation();
+  }
+
+
+  private configureChatScroll() {
     const that = this;
     // tslint:disable-next-line:only-arrow-functions
     $('.msg_history').scroll(function() {
@@ -58,15 +64,12 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
         that.previousMessages();
       }
     });
-    this.getUserInformation();
   }
-
 
   private getUserConversations() {
     this.conversationService.getConversation().pipe(first())
       .subscribe(result => {
         this.conversationList = result;
-        this.enterConversation(result[0].id);
       });
   }
 
@@ -124,11 +127,11 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
   }
 
   showFriendRequestList() {
-    this.activeFriendRequestList = true;
-    this.activeFriendsList = false;
-
     this.friendService.getUserFriendRequests().subscribe(result => {
       this.friendRequestList = result;
+      console.log(result);
+      this.activeFriendRequestList = true;
+      this.activeFriendsList = false;
     });
   }
 
@@ -142,4 +145,29 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected, Afte
       this.user = user;
     });
   }
+
+  sendFriendRequest() {
+    const invitationCode = this.inviteCode.nativeElement.value;
+    this.friendService.sendFriendRequest(invitationCode)
+      .subscribe(result => {
+        this.friendRequestList.push(result);
+        this.showNotificationMessage('We send new friend invitation.');
+      }, errorObject => {
+        if (errorObject.status === 404 || errorObject.status === 400) {
+          this.showNotificationMessage(errorObject.error.detail);
+        }
+      });
+
+    this.inviteCode.nativeElement.value = '';
+  }
+
+
+  showNotificationMessage(message) {
+    this.notificationMessage = message;
+    this.isNotificationVisible = true;
+    setTimeout(() => {
+      this.isNotificationVisible = false;
+    }, 2000);
+  }
+
 }

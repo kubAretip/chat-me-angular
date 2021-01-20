@@ -7,7 +7,6 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import { FriendRequestComponent } from './friend-request/friend-request.component';
 
-
 @NgModule({
   declarations: [
     DashboardComponent,

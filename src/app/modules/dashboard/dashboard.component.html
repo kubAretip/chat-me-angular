@@ -1,19 +1,28 @@
 <div class="container">
+  <div class="text-center notify" [ngClass]="isNotificationVisible ? 'active':''" role="alert" #notification>
+    <span>{{notificationMessage}}</span>
+  </div>
   <br>
   <div class="messaging">
     <div class="inbox_msg">
-
       <div class="inbox_people">
         <div class="headind_srch">
           <div class="recent_heading">
-            <h4>Hi {{user.firstName + ' ' + user.lastName}}</h4>
+            <h4>{{user.firstName + ' ' + user.lastName}}</h4>
           </div>
-          <div class="srch_bar">
-            <div class="stylish-input-group">
-              <input type="text" class="search-bar" placeholder="Search">
-              <span class="input-group-addon">
+          <div *ngIf="activeFriendsList">
+            <div class="srch_bar">
+              <div class="stylish-input-group">
+                <input type="text" class="search-bar" placeholder="Search">
+                <span class="input-group-addon">
                 <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
                 </span></div>
+            </div>
+          </div>
+          <div *ngIf="activeFriendRequestList">
+            <button (click)="showFriendList()">Back to friend list</button>
+            <input type="text" class="search-bar" placeholder="Friend code" #inviteCode>
+            <button (click)="sendFriendRequest()">Send</button>
           </div>
         </div>
         <div class="inbox_chat">
@@ -23,12 +32,11 @@
                           (click)="enterConversation(conversation.id)" [newMessage]="newMessage"></app-friend>
             </div>
           </div>
+          <div *ngIf="activeFriendsList && conversationList.length === 0">
+            <p>pusto</p>
+          </div>
+
           <div *ngIf="activeFriendRequestList">
-            <button (click)="showFriendList()">Back to friend list</button>
-            <br>
-            <input type="text" class="search-bar" placeholder="Friend code">
-            <button>Send</button>
-            <br>
             <div *ngFor="let friendRequest of friendRequestList">
               <app-friend-request [friendRequest]="friendRequest"></app-friend-request>
             </div>
@@ -51,7 +59,9 @@
             <app-message [message]="message"></app-message>
           </div>
         </div>
-
+        <div *ngIf="currentConversationId === null">
+          <- chose conversation
+        </div>
         <div class="type_msg">
           <div class="input_msg_write">
             <input type="text" class="write_msg" placeholder="Type a message" #inputMessage/>

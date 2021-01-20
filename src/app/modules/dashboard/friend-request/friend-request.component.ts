@@ -9,16 +9,17 @@ import {AuthService} from '../../../shared/services/auth.service';
 })
 export class FriendRequestComponent implements OnInit {
 
-  currentUserId;
+  currentUserId?: number;
 
   @Input('friendRequest')
   friendRequest: FriendRequest;
 
   constructor(private authService: AuthService) {
-    this.currentUserId = authService.currentUserValue.id;
+    this.currentUserId = this.authService.currentUserValue.id;
   }
 
   ngOnInit(): void {
+
   }
 
 }

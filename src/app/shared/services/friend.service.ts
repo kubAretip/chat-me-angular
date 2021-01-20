@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {baseUrl} from '../../../environments/environment';
 import {FriendRequest} from '../models/friend-request';
 
@@ -12,6 +12,12 @@ export class FriendService {
 
   getUserFriendRequests() {
     return this.http.get<FriendRequest[]>(`${baseUrl}/friends`);
+  }
+
+  sendFriendRequest(invitationCode) {
+    const params = new HttpParams()
+      .set('invite_code', invitationCode);
+    return this.http.post<FriendRequest>(`${baseUrl}/friends?${params.toString()}`, {});
   }
 
 

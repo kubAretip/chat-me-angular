@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../../../shared/models/user';
 import {AuthService} from '../../../shared/services/auth.service';
 import {AccountService} from '../../../shared/services/account.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-account',
@@ -10,7 +11,8 @@ import {AccountService} from '../../../shared/services/account.service';
 })
 export class AccountComponent implements OnInit {
 
-  user: User;
+  accountFormGroup: FormGroup;
+  user = {} as User;
 
   constructor(private authService: AuthService,
               private accountService: AccountService) {
@@ -20,6 +22,11 @@ export class AccountComponent implements OnInit {
     this.accountService.getUser().subscribe(result => {
       this.user = result;
     });
+    this.initForm();
+  }
+
+  initForm() {
+    this.accountFormGroup = new FormGroup({});
   }
 
   generateNewFriendCode() {
