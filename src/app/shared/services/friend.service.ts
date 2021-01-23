@@ -9,15 +9,31 @@ export class FriendService {
   constructor(private http: HttpClient) {
   }
 
-
-  getUserFriendRequests() {
-    return this.http.get<FriendRequest[]>(`${baseUrl}/friends`);
+  getReceivedFriendRequest() {
+    return this.http.get<FriendRequest[]>(`${baseUrl}/friends-request`);
   }
 
-  sendFriendRequest(invitationCode) {
+  getSentFriendsRequest() {
+    const params = new HttpParams()
+      .set('status', 'sent');
+    return this.http.get<FriendRequest[]>(`${baseUrl}/friends-request?${params.toString()}`);
+  }
+
+  postCreateNewFriendRequest(invitationCode) {
     const params = new HttpParams()
       .set('invite_code', invitationCode);
-    return this.http.post<FriendRequest>(`${baseUrl}/friends?${params.toString()}`, {});
+    return this.http.post<FriendRequest>(`${baseUrl}/friends-request?${params.toString()}`, {});
+  }
+
+  replyToFriendsRequest(id, accept) {
+    const params = new HttpParams()
+      .set('accept', accept);
+    return this.http.patch(`${baseUrl}/friends-request/${id}?${params.toString()}`, {});
+  }
+
+
+  cancelSentFriendRequest(id) {
+    return this.http.delete(`${baseUrl}/friends-request/${id}`);
   }
 
 

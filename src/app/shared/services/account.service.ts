@@ -12,7 +12,6 @@ export class AccountService {
   activateUser(activationKey) {
     const params = new HttpParams()
       .set('data', activationKey);
-
     return this.http.patch(`${baseUrl}/accounts/activate?${params.toString()}`, {});
   }
 

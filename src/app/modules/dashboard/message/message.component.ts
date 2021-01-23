@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Message} from '../../../shared/models/message';
 import {AuthService} from '../../../shared/services/auth.service';
 
@@ -7,18 +7,25 @@ import {AuthService} from '../../../shared/services/auth.service';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.css']
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, AfterViewInit {
 
   currentUserId: number;
 
   @Input('message')
   message: Message = null;
 
+  @Output()
+  afterRenderMessage: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(private authService: AuthService) {
     this.currentUserId = authService.currentUserValue.id;
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.afterRenderMessage.emit();
   }
 
 }

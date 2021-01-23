@@ -25,5 +25,10 @@ export class MessageService {
     return this.http.get<Message[]>(`${baseUrl}/messages?${params.toString()}`);
   }
 
+  markMessageAsDelivered(conversationWithId) {
+    const params = new HttpParams()
+      .set('conversation_with_id', conversationWithId);
+    return this.http.patch(`${baseUrl}/messages?${params.toString()}`, {});
+  }
 
 }

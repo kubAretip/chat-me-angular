@@ -12,7 +12,6 @@ export class WsMessagesService {
 
   connect(token, afterWebSocketConnected) {
     this.ws = Stomp.client(`${wsBaseUrl}`);
-    const that = this;
     this.ws.connect({
       Authorization: 'Bearer ' + token
       // tslint:disable-next-line:only-arrow-functions
@@ -22,15 +21,12 @@ export class WsMessagesService {
   }
 
   sendMessage(message) {
-    this.ws.send('/app/chat', {}, JSON.stringify(message));
+    return this.ws.send('/app/chat', {}, JSON.stringify(message));
   }
 
   disconnect() {
     if (this.ws != null) {
       this.ws.ws.close();
     }
-    console.log('Disconnected');
   }
-
-
 }

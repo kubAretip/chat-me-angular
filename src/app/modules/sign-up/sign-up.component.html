@@ -3,6 +3,7 @@
   <div class="img">
     <img src="assets/img/login_pic.svg">
   </div>
-  <app-login *ngIf="currentUrl == 'login'" [afterRegistration]="afterRegistration" [afterActivation]="afterActivation"></app-login>
+  <app-login *ngIf="currentUrl == 'login'" [afterRegistration]="afterRegistration"
+             [afterActivation]="afterActivation"></app-login>
   <app-register *ngIf="currentUrl == 'register'"></app-register>
 </div>

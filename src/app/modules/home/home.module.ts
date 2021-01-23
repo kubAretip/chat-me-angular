@@ -10,11 +10,11 @@ import {RouterModule} from '@angular/router';
   exports: [
     HomeComponent
   ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        RouterModule
-    ]
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule
+  ]
 })
 export class HomeModule {
 }

@@ -6,12 +6,6 @@
   background: #ebebeb;
 }
 
-.inactive_chat, .active_chat {
-  border-bottom: 1px solid #c4c4c4;
-
-  margin: 0;
-}
-
 .chat_people_details {
   padding: 18px 16px 10px;
 }
@@ -61,4 +55,11 @@
 
 img {
   max-width: 100%;
+}
+
+.last-message {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
 }

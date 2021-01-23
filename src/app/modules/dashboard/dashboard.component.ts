@@ -12,8 +12,7 @@ import {AccountService} from '../../shared/services/account.service';
 import {User} from '../../shared/models/user';
 import {FriendService} from '../../shared/services/friend.service';
 import {FriendRequest} from '../../shared/models/friend-request';
-
-declare var $: any;
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,20 +22,29 @@ declare var $: any;
 export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
   @ViewChild('inputMessage') inputMessage: ElementRef;
-  @ViewChild('messageContainer') messageContainer: ElementRef;
-  @ViewChild('inviteCode') inviteCode: ElementRef;
+  @ViewChild('friendCode') friendCode: ElementRef;
   @ViewChild('notification') notification: ElementRef;
+  @ViewChild('messageContainer') messageContainer: ElementRef;
+  @ViewChild('appMessage') appMessage: ElementRef;
+
+  isNewMessage: Subject<Message> = new Subject();
+  clickFriendComponent: Subject<number> = new Subject();
+
   notificationMessage = '';
-  activeFriendsList = true;
-  activeFriendRequestList = false;
+
+  isActiveFriendComponent = true;
+  isActiveFriendRequestComponent = false;
+  isActiveAddFriendComponent = false;
+
   isNotificationVisible = false;
-  currentConversation: Conversation;
-  newMessage: Message = null;
+  sentFriendsRequest: FriendRequest[] = [];
+  currentUser = {} as User;
+  receivedFriendsRequest: FriendRequest[] = [];
   conversationList: Conversation[] = [];
-  friendRequestList: FriendRequest[];
-  messageList: Message[];
-  currentConversationId: number = null;
-  user = {} as User;
+  messageList: Message[] = [];
+  currentConversation: Conversation = null;
+  scrollDivMessagePosition: number = null;
+  private shouldScrollToBottomAfterSendMessage = false;
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -48,22 +56,9 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     wsMessagesService.connect(authService.getToken(), this);
   }
 
-
   ngOnInit(): void {
     this.getUserConversations();
-    this.configureChatScroll();
     this.getUserInformation();
-  }
-
-
-  private configureChatScroll() {
-    const that = this;
-    // tslint:disable-next-line:only-arrow-functions
-    $('.msg_history').scroll(function() {
-      if ($('.msg_history').scrollTop() === 0) {
-        that.previousMessages();
-      }
-    });
   }
 
   private getUserConversations() {
@@ -73,7 +68,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
       });
   }
 
-  previousMessages() {
+  getPreviousMessages() {
     this.messageService.getPreviousMessages(10, this.currentConversation.id, this.messageList[0].time)
       .subscribe(result => {
         result.forEach(message => {
@@ -89,27 +84,47 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
   enterConversation(conversationId) {
     this.currentConversation = this.conversationList.filter(value => value.id === conversationId)[0];
-    this.currentConversationId = this.currentConversation.id;
+    this.getInitialMessages(conversationId);
+    console.log(conversationId);
+    this.clickFriendComponent.next(conversationId);
+  }
+
+  getInitialMessages(conversationId) {
     this.messageService.getLastMessages(10, conversationId).pipe(first())
       .subscribe(result => {
         this.messageList = result;
-        console.log(this.messageContainer.nativeElement.scrollHeight);
       });
   }
 
-  sentMessage(messageContent) {
+  sentMessage() {
     const message = {
       sender: this.authService.currentUserValue,
       recipient: this.currentConversation.recipient,
-      content: messageContent,
-      conversationId: this.currentConversationId,
+      content: this.inputMessage.nativeElement.value,
+      conversationId: this.currentConversation.id,
       time: new Date().toLocaleString().replace(',', '')
-    };
+    } as Message;
     this.messageList.push(message);
     this.wsMessagesService.sendMessage(message);
     this.inputMessage.nativeElement.value = '';
-    this.newMessage = message;
-    this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    message.messageStatus = 'DELIVERED';
+    this.isNewMessage.next(message);
+    this.shouldScrollToBottomAfterSendMessage = true;
+  }
+
+  scrollChatMessage() {
+    // scroll to bottom after send message
+    if (this.shouldScrollToBottomAfterSendMessage) {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      this.shouldScrollToBottomAfterSendMessage = false;
+      return;
+    }
+
+    if (this.scrollDivMessagePosition !== null && this.scrollDivMessagePosition < this.messageContainer.nativeElement.scrollHeight) {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight - this.scrollDivMessagePosition;
+    } else {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    }
   }
 
   wsAfterConnected() {
@@ -119,58 +134,91 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
       function(message) {
         let conversationMessage: Message;
         conversationMessage = JSON.parse(message.body);
-        that.newMessage = conversationMessage;
-        if (conversationMessage.conversationId === that.currentConversation.conversationWithId) {
-          that.messageList.push(conversationMessage);
+        if (that.currentConversation !== null && conversationMessage.conversationId === that.currentConversation.conversationWithId) {
+          that.messageService.markMessageAsDelivered(that.currentConversation.conversationWithId).subscribe(result => {
+            conversationMessage.messageStatus = 'DELIVERED';
+            that.messageList.push(conversationMessage);
+          });
         }
+        that.isNewMessage.next(conversationMessage);
       });
   }
 
-  showFriendRequestList() {
-    this.friendService.getUserFriendRequests().subscribe(result => {
-      this.friendRequestList = result;
-      console.log(result);
-      this.activeFriendRequestList = true;
-      this.activeFriendsList = false;
-    });
+  showFriendRequestComponent() {
+    this.friendService.getReceivedFriendRequest()
+      .subscribe(result => {
+        this.receivedFriendsRequest = result;
+        this.isActiveFriendRequestComponent = true;
+        this.isActiveFriendComponent = false;
+        this.isActiveAddFriendComponent = false;
+      });
   }
 
-  showFriendList() {
-    this.activeFriendRequestList = false;
-    this.activeFriendsList = true;
+  showFriendComponent() {
+    this.isActiveFriendComponent = true;
+    this.isActiveFriendRequestComponent = false;
+    this.isActiveAddFriendComponent = false;
+    this.getUserConversations();
+  }
+
+  showAddFriendComponent() {
+    this.friendService.getSentFriendsRequest()
+      .subscribe(result => {
+        this.sentFriendsRequest = result;
+        this.isActiveAddFriendComponent = true;
+        this.isActiveFriendRequestComponent = false;
+        this.isActiveFriendComponent = false;
+      });
   }
 
   private getUserInformation() {
     this.accountService.getUser().subscribe(user => {
-      this.user = user;
+      this.currentUser = user;
     });
   }
 
   sendFriendRequest() {
-    const invitationCode = this.inviteCode.nativeElement.value;
-    this.friendService.sendFriendRequest(invitationCode)
-      .subscribe(result => {
-        this.friendRequestList.push(result);
-        this.showNotificationMessage('We send new friend invitation.');
-      }, errorObject => {
-        if (errorObject.status === 404 || errorObject.status === 400) {
-          this.showNotificationMessage(errorObject.error.detail);
-        }
-      });
-
-    this.inviteCode.nativeElement.value = '';
+    const invitationCode = this.friendCode.nativeElement.value;
+    if (invitationCode.length !== 0) {
+      this.friendService.postCreateNewFriendRequest(invitationCode)
+        .subscribe(result => {
+          this.sentFriendsRequest.push(result);
+          this.showNotificationMessage('We send a new friends request.');
+        }, errorObject => {
+          if (errorObject.status === 404 || errorObject.status === 400 || errorObject.status === 409) {
+            console.log(errorObject);
+            this.showNotificationMessage(errorObject.error.detail);
+          }
+        });
+      this.friendCode.nativeElement.value = '';
+    }
   }
-
 
   showNotificationMessage(message) {
-
     this.notificationMessage = message;
     this.isNotificationVisible = true;
-    console.log(this.isNotificationVisible);
     setTimeout(() => {
       this.isNotificationVisible = false;
-      console.log(this.isNotificationVisible);
-    }, 2000);
+    }, 2500);
   }
 
+  onDeletedFriendsRequest(resultMessage: string) {
+    this.showNotificationMessage(resultMessage);
+    this.showAddFriendComponent();
+  }
+
+  onReplyFriendsRequest(resultMessage: string) {
+    this.showNotificationMessage(resultMessage);
+    this.showFriendRequestComponent();
+  }
+
+  onScrollMessages(event: Event) {
+    // @ts-ignore
+    if (event.target.scrollTop === 0) {
+      // @ts-ignore
+      this.scrollDivMessagePosition = event.target.scrollHeight;
+      console.log(this.scrollDivMessagePosition);
+      this.getPreviousMessages();
+    }
+  }
 }

@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FriendRequest} from '../../../shared/models/friend-request';
-import {AuthService} from '../../../shared/services/auth.service';
+import {FriendService} from '../../../shared/services/friend.service';
 
 @Component({
   selector: 'app-friend-request',
@@ -9,17 +9,30 @@ import {AuthService} from '../../../shared/services/auth.service';
 })
 export class FriendRequestComponent implements OnInit {
 
-  currentUserId?: number;
-
   @Input('friendRequest')
   friendRequest: FriendRequest;
 
-  constructor(private authService: AuthService) {
-    this.currentUserId = this.authService.currentUserValue.id;
+  @Output()
+  friendsRequestReply: EventEmitter<string> = new EventEmitter<string>();
+
+  constructor(private friendService: FriendService) {
   }
 
   ngOnInit(): void {
 
   }
 
+  acceptFriendsRequest() {
+    this.friendService.replyToFriendsRequest(this.friendRequest.id, true)
+      .subscribe(result => {
+        this.friendsRequestReply.emit('Friends request has been accepted');
+      });
+  }
+
+  rejectFriendsRequest() {
+    this.friendService.replyToFriendsRequest(this.friendRequest.id, false)
+      .subscribe(result => {
+        this.friendsRequestReply.emit('Friends request has been rejected');
+      });
+  }
 }
