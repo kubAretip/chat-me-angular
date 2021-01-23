@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   currentConversation: Conversation = null;
   scrollDivMessagePosition: number = null;
   private shouldScrollToBottomAfterSendMessage = false;
+  private audio = new Audio();
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -54,6 +55,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
               private accountService: AccountService,
               private friendService: FriendService) {
     wsMessagesService.connect(authService.getToken(), this);
+    this.initAudioNotification();
   }
 
   ngOnInit(): void {
@@ -139,6 +141,8 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
             conversationMessage.messageStatus = 'DELIVERED';
             that.messageList.push(conversationMessage);
           });
+        } else {
+          that.audio.play();
         }
         that.isNewMessage.next(conversationMessage);
       });
@@ -192,6 +196,11 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
         });
       this.friendCode.nativeElement.value = '';
     }
+  }
+
+  initAudioNotification() {
+    this.audio.src = '../../../assets/audio/notification_sound.mp3';
+    this.audio.load();
   }
 
   showNotificationMessage(message) {
