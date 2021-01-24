@@ -14,4 +14,8 @@ export class ConversationService {
     return this.http.get<Conversation[]>(`${baseUrl}/conversations`);
   }
 
+  deleteFriendConversation(conversationId) {
+    return this.http.delete(`${baseUrl}/conversations/${conversationId}`);
+  }
+
 }
