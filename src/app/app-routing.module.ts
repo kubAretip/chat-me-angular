@@ -5,7 +5,6 @@ import {NotFoundComponent} from './shared/components/not-found/not-found.compone
 import {SignUpComponent} from './modules/sign-up/sign-up.component';
 import {DashboardComponent} from './modules/dashboard/dashboard.component';
 import {AuthGuard} from './shared/helpers/auth.guard';
-import {SettingsComponent} from './modules/settings/settings.component';
 
 const routes: Routes = [
 
@@ -24,11 +23,6 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'settings',
-    component: SettingsComponent,
     canActivate: [AuthGuard]
   },
   {

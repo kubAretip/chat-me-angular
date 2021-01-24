@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../shared/services/auth.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-settings',
@@ -7,18 +6,19 @@ import {AuthService} from '../../shared/services/auth.service';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+
   displayAccountSettings = true;
   displayPasswordSettings = false;
 
-  constructor(private authService: AuthService) {
+  @Output()
+  onSettingsOperation: EventEmitter<string> = new EventEmitter<string>();
+
+  constructor() {
   }
 
   ngOnInit(): void {
   }
 
-  logout() {
-    this.authService.logout();
-  }
 
   accountSettings() {
     this.displayAccountSettings = true;
@@ -28,5 +28,9 @@ export class SettingsComponent implements OnInit {
   passwordSettings() {
     this.displayAccountSettings = false;
     this.displayPasswordSettings = true;
+  }
+
+  onChangePasswordRequest($event: string) {
+    this.onSettingsOperation.emit($event);
   }
 }

@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AccountService} from '../../../shared/services/account.service';
+import {AccountService} from '../../../../shared/services/account.service';
 
 @Component({
   selector: 'app-change-password',
@@ -12,6 +12,9 @@ export class ChangePasswordComponent implements OnInit {
   changePasswordForm: FormGroup;
   newPasswordValidationError = '';
   currentPasswordValidationError = '';
+  confirmNewPasswordValidationError = '';
+
+  @Output() onChangePasswordRequest: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private accountService: AccountService) {
 
@@ -22,23 +25,35 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   saveNewPassword() {
+
     if (this.changePasswordForm.valid) {
+
+      if (this.newPassword.value !== this.confirmNewPassword.value) {
+        this.newPassword.reset();
+        this.confirmNewPassword.setErrors({validation: true});
+        this.confirmNewPasswordValidationError = 'Password not match';
+        return;
+      }
+
       this.accountService.changePassword(
         {
-          currentPassword: this.changePasswordForm.get('currentPassword').value,
-          newPassword: this.changePasswordForm.get('newPassword').value
+          currentPassword: this.currentPassword.value,
+          newPassword: this.newPassword.value
         }).subscribe(result => {
         console.log(result);
+        this.onChangePasswordRequest.emit('Password changed');
+        this.currentPassword.reset();
+        this.confirmNewPassword.reset();
+        this.newPassword.reset();
       }, errorObject => {
-        console.log(errorObject);
         if (errorObject.status === 400) {
           const violationsErrors = errorObject.error.violations;
           if (violationsErrors) {
             violationsErrors.forEach(error => {
               if (error.field === 'newPassword') {
-                this.changePasswordForm.controls['newPassword'].setValue('');
-                this.changePasswordForm.controls['confirmNewPassword'].reset();
-                this.changePasswordForm.controls['newPassword'].setErrors({'validation': true});
+                this.newPassword.setValue('');
+                this.confirmNewPassword.reset();
+                this.newPassword.setErrors({validation: true});
                 this.newPasswordValidationError = error.message;
               }
             });
@@ -46,11 +61,11 @@ export class ChangePasswordComponent implements OnInit {
 
           const messageDetailsError = errorObject.error.detail;
           if (messageDetailsError) {
-            this.changePasswordForm.controls['currentPassword'].setValue('');
-            this.changePasswordForm.controls['currentPassword'].setErrors({'validation': true});
+            this.currentPassword.setValue('');
+            this.currentPassword.setErrors({validation: true});
             this.currentPasswordValidationError = messageDetailsError;
-            this.changePasswordForm.controls['newPassword'].reset();
-            this.changePasswordForm.controls['confirmNewPassword'].reset();
+            this.newPassword.reset();
+            this.confirmNewPassword.reset();
           }
 
         }
@@ -65,6 +80,18 @@ export class ChangePasswordComponent implements OnInit {
       newPassword: new FormControl('', [Validators.required]),
       confirmNewPassword: new FormControl('', [Validators.required])
     });
+  }
+
+  get currentPassword() {
+    return this.changePasswordForm.get('currentPassword');
+  }
+
+  get newPassword() {
+    return this.changePasswordForm.get('newPassword');
+  }
+
+  get confirmNewPassword() {
+    return this.changePasswordForm.get('confirmNewPassword');
   }
 
 }

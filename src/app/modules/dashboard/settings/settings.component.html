@@ -1,0 +1,24 @@
+<div class="home-container text-center">
+  <div class="cover-container d-flex h-100 flex-column">
+    <main role="main" class="inner cover">
+      <ul class="nav justify-content-center" role="tablist" style="background-color: #ffffff">
+        <li class="nav-item">
+          <a class="nav-link active" href="#accountSettings" (click)="accountSettings()" data-toggle="tab" role="tab">Account
+            information</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#passwordSettings" (click)="passwordSettings()" data-toggle="tab" role="tab">Change
+            password</a>
+        </li>
+      </ul>
+      <div class="tab-content text-left" id="myTabContent" style="margin-top: 15%">
+        <div *ngIf="displayAccountSettings">
+          <app-account (onChangeAccountInformationRequest)="onChangePasswordRequest($event)"></app-account>
+        </div>
+        <div *ngIf="displayPasswordSettings">
+          <app-change-password (onChangePasswordRequest)="onChangePasswordRequest($event)"></app-change-password>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

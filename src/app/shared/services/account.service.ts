@@ -27,4 +27,7 @@ export class AccountService {
     return this.http.patch(`${baseUrl}/accounts/change-password`, newPassword);
   }
 
+  modifyAccountInformation(id: number, user: User) {
+    return this.http.patch<User>(`${baseUrl}/accounts/${id}`, user);
+  }
 }

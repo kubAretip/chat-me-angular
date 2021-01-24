@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {baseUrl} from '../../../environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../models/user';
 import {JwtHelperService} from '@auth0/angular-jwt';

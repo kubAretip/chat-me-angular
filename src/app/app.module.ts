@@ -10,7 +10,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardModule} from './modules/dashboard/dashboard.module';
 import {TokenInterceptor} from './shared/helpers/token.interceptor';
-import {SettingsModule} from './modules/settings/settings.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,6 @@ import {SettingsModule} from './modules/settings/settings.module';
     AppRoutingModule,
     SharedModule,
     HomeModule,
-    SettingsModule,
     SignUpModule,
     HttpClientModule,
     FormsModule,

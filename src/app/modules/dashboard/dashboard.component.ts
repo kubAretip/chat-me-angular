@@ -32,9 +32,10 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
   notificationMessage = '';
 
-  isActiveFriendComponent = true;
+  isActiveFriendComponent = false;
   isActiveFriendRequestComponent = false;
   isActiveAddFriendComponent = false;
+  isActiveSettingsComponent = true;
   showDeleteFriendPrompt = false;
   isNotificationVisible = false;
   sentFriendsRequest: FriendRequest[] = [];
@@ -155,6 +156,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
         this.isActiveFriendRequestComponent = true;
         this.isActiveFriendComponent = false;
         this.isActiveAddFriendComponent = false;
+        this.isActiveSettingsComponent = false;
       });
   }
 
@@ -162,7 +164,9 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     this.isActiveFriendComponent = true;
     this.isActiveFriendRequestComponent = false;
     this.isActiveAddFriendComponent = false;
+    this.isActiveSettingsComponent = false;
     this.getUserConversations();
+    this.getUserInformation();
   }
 
   showAddFriendComponent() {
@@ -172,7 +176,16 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
         this.isActiveAddFriendComponent = true;
         this.isActiveFriendRequestComponent = false;
         this.isActiveFriendComponent = false;
+        this.isActiveSettingsComponent = false;
       });
+  }
+
+  showSettingsComponent() {
+    this.isActiveFriendComponent = false;
+    this.isActiveFriendRequestComponent = false;
+    this.isActiveAddFriendComponent = false;
+    this.isActiveSettingsComponent = true;
+    this.currentConversation = null;
   }
 
   private getUserInformation() {
@@ -248,4 +261,6 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   cancelDeleteFriend() {
     this.showDeleteFriendPrompt = false;
   }
+
+
 }
