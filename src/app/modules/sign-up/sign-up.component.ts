@@ -45,8 +45,6 @@ export class SignUpComponent implements OnInit {
     this.accountService.activateUser(activationKey).subscribe(result => {
       this.router.navigate(['/login']);
       this.afterActivation = true;
-    }, error => {
-      console.log(error);
     });
   }
 

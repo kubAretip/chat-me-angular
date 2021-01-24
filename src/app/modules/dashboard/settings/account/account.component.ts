@@ -57,7 +57,7 @@ export class AccountComponent implements OnInit {
               this.firstNameValidationError = error.message;
             }
             if (error.field === 'lastName') {
-              this.firstNameValidationError = error.message;
+              this.lastNameValidationError = error.message;
             }
           });
         }

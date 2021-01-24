@@ -32,10 +32,10 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
   notificationMessage = '';
 
-  isActiveFriendComponent = false;
+  isActiveFriendComponent = true;
   isActiveFriendRequestComponent = false;
   isActiveAddFriendComponent = false;
-  isActiveSettingsComponent = true;
+  isActiveSettingsComponent = false;
   showDeleteFriendPrompt = false;
   isNotificationVisible = false;
   sentFriendsRequest: FriendRequest[] = [];
@@ -88,7 +88,6 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   enterConversation(conversationId) {
     this.currentConversation = this.conversationList.filter(value => value.id === conversationId)[0];
     this.getInitialMessages(conversationId);
-    console.log(conversationId);
     this.clickFriendComponent.next(conversationId);
   }
 
@@ -203,7 +202,6 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
           this.showNotificationMessage('We send a new friends request.');
         }, errorObject => {
           if (errorObject.status === 404 || errorObject.status === 400 || errorObject.status === 409) {
-            console.log(errorObject);
             this.showNotificationMessage(errorObject.error.detail);
           }
         });
@@ -239,7 +237,6 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     if (event.target.scrollTop === 0) {
       // @ts-ignore
       this.scrollDivMessagePosition = event.target.scrollHeight;
-      console.log(this.scrollDivMessagePosition);
       this.getPreviousMessages();
     }
   }

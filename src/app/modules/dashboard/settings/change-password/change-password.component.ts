@@ -40,7 +40,6 @@ export class ChangePasswordComponent implements OnInit {
           currentPassword: this.currentPassword.value,
           newPassword: this.newPassword.value
         }).subscribe(result => {
-        console.log(result);
         this.onChangePasswordRequest.emit('Password changed');
         this.currentPassword.reset();
         this.confirmNewPassword.reset();
