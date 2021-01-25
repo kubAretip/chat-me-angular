@@ -46,8 +46,20 @@
 }
 
 .outgoing-message-text > p {
-  background: #0DEBFF none repeat scroll 0 0;
+  background: #0275d8 none repeat scroll 0 0;
+  color: #ffffff;
 }
+
+.outgoing-message-text > p::-moz-selection { /* Code for Firefox */
+  color: #000000;
+  background: #0DEBFF;
+}
+
+.outgoing-message-text > p::selection {
+  color: #000000;
+  background: #0DEBFF;
+}
+
 
 .outgoing-message-date {
   text-align: right;

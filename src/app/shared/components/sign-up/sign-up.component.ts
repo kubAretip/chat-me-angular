@@ -16,6 +16,7 @@ export class SignUpComponent implements OnInit {
   confirmPasswordValidationError = '';
   passwordValidationError = '';
   emailValidationError = '';
+  loginValidationError = '';
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -74,6 +75,11 @@ export class SignUpComponent implements OnInit {
               this.emailValidationError = error.message;
               this.email.setErrors({validation: true});
             }
+            if (error.field === 'login') {
+              this.loginValidationError = 'Login can contains only letters and numbers';
+              this.login.setErrors({validation: true});
+            }
+
           });
         }
 
@@ -88,6 +94,7 @@ export class SignUpComponent implements OnInit {
     this.confirmPasswordValidationError = '';
     this.passwordValidationError = '';
     this.emailValidationError = '';
+    this.loginValidationError = '';
     this.notificationMessage = '';
   }
 

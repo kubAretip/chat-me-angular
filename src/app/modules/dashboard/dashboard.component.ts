@@ -99,19 +99,27 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   sentMessage() {
-    const message = {
-      sender: this.authService.currentUserValue,
-      recipient: this.currentConversation.recipient,
-      content: this.inputMessage.nativeElement.value,
-      conversationId: this.currentConversation.id,
-      time: new Date().toLocaleString().replace(',', '')
-    } as Message;
-    this.messageList.push(message);
-    this.wsMessagesService.sendMessage(message);
-    this.inputMessage.nativeElement.value = '';
-    message.messageStatus = 'DELIVERED';
-    this.isNewMessage.next(message);
-    this.shouldScrollToBottomAfterSendMessage = true;
+    let messageContent = this.inputMessage.nativeElement.value;
+    // delete EOL
+    messageContent = messageContent.slice(0, -1);
+    if (messageContent !== '' || 0 !== messageContent.length) {
+      const message = {
+        sender: this.authService.currentUserValue,
+        recipient: this.currentConversation.recipient,
+        content: messageContent,
+        conversationId: this.currentConversation.id,
+        time: new Date().toLocaleString().replace(',', '')
+      } as Message;
+      this.messageList.push(message);
+      this.wsMessagesService.sendMessage(message);
+      this.inputMessage.nativeElement.value = '';
+      message.messageStatus = 'DELIVERED';
+      this.isNewMessage.next(message);
+      this.shouldScrollToBottomAfterSendMessage = true;
+    } else {
+      this.inputMessage.nativeElement.value = '';
+    }
+
   }
 
   scrollChatMessage() {
@@ -194,7 +202,8 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   sendFriendRequest() {
-    const invitationCode = this.friendCode.nativeElement.value;
+    let invitationCode = this.friendCode.nativeElement.value;
+    invitationCode = invitationCode.replace(/\s/g, '');
     if (invitationCode.length !== 0) {
       this.friendService.postCreateNewFriendRequest(invitationCode)
         .subscribe(result => {

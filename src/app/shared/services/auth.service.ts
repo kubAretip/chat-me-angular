@@ -52,7 +52,6 @@ export class AuthService {
   }
 
   logout() {
-    console.log('logout');
     localStorage.removeItem('token');
     localStorage.removeItem('token_type');
     localStorage.removeItem('user');
