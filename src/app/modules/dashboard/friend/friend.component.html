@@ -6,15 +6,21 @@
   </div>
   <div class="col-7">
     <div class="row">
-      <div class="col-12"
-           style="font-size: 22px">{{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}</div>
-      <div class="col-12"><span *ngIf="lastMessage.content; else noMessage"
-                                class="last-message">{{lastMessage.content}}</span></div>
+      <div class="col-12" style="font-size: 22px">
+        {{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}
+      </div>
+      <div class="col-12">
+        <span *ngIf="lastMessage.content; else noMessage" class="last-message">
+          {{lastMessage.content}}
+        </span>
+      </div>
       <ng-template #noMessage>
         <span class="last-message"><i>No messages.</i></span>
       </ng-template>
     </div>
   </div>
-  <div class="col-lg-3 text-right" style="font-size: 13px;">{{lastMessage.time}}</div>
+  <div class="col-lg-3 text-right" style="font-size: 13px;">
+    {{lastMessage.time}}
+  </div>
 </div>
 

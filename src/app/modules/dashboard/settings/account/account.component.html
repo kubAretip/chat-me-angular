@@ -28,8 +28,8 @@
   <div class="form-group row">
     <label for="firstName" class="col-sm-3 col-form-label">First name</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control account-info-input" id="firstName" placeholder="First name" value="{{user.firstName}}"
-             #firstName/>
+      <input type="text" class="form-control account-info-input" id="firstName" placeholder="First name"
+             value="{{user.firstName}}" #firstName/>
       <small class="form-text text-danger" *ngIf="firstNameValidationError">
         {{firstNameValidationError}}
       </small>
@@ -38,8 +38,8 @@
   <div class="form-group row">
     <label for="lastName" class="col-sm-3 col-form-label">Last name</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control account-info-input" id="lastName" placeholder="Last name" value="{{user.lastName}}"
-             #lastName/>
+      <input type="text" class="form-control account-info-input" id="lastName" placeholder="Last name"
+             value="{{user.lastName}}" #lastName/>
       <small class="form-text text-danger" *ngIf="lastNameValidationError">
         {{lastNameValidationError}}
       </small>

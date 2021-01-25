@@ -57,6 +57,24 @@
   background: #0098E8;
 }
 
+.send-message-textarea {
+  resize: none;
+}
+
+.chat-current-person-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.chat-current-person-container img {
+  max-width: 35px
+}
+
+.chat-current-person-text {
+  font-size: 30px;
+}
+
 .input-message {
   height: 100%;
   resize: none;
@@ -113,6 +131,10 @@
   display: block;
 }
 
+.back-button{
+  width: 50px;
+}
+
 .left-header-text-friends-code {
   font-size: 12px;
   text-overflow: ellipsis;
@@ -123,6 +145,25 @@
 
 .left-header-friend-request-text {
   font-size: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+}
+
+.left-buttons-menu-ico {
+  width: 30px;
+}
+
+.remove-friend-alert {
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 25%;
+  position: absolute;
+  z-index: 1000;
+  height: 250px;
+  width: 300px;
 }
 
 @media (max-width: 576px) {
@@ -145,14 +186,5 @@
   .left-header-text-user {
     font-size: 20px;
   }
-
-  .left-header-friend-request-text {
-    display: none;
-  }
 }
 
-@media (max-width: 992px) {
-  .left-header-friend-request-text {
-    font-size: 15px;
-  }
-}

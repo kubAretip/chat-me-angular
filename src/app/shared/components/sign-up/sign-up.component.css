@@ -4,6 +4,8 @@
 
 .page-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .page-column {
@@ -17,6 +19,7 @@
 
 .registration-pic {
   width: 20%;
+  min-width: 150px;
 }
 
 .notification-text {

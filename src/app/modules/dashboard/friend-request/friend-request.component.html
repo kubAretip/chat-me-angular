@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-12" style="border-bottom: 1px solid #c4c4c4;">
     <div class="row" style="padding: 5px">
-      <div class="col-2" style=" margin: auto;">
+      <div class="col-2 m-auto pl-2">
         <img src="/assets/img/user_avatar.svg" alt="" style="max-width: 35px">
       </div>
       <div class="col-10">
@@ -10,13 +10,13 @@
             <b>{{friendRequest.recipient.firstName + ' ' + friendRequest.recipient.lastName}}</b> sent you a friend
             request.
           </div>
-          <div class="col-12 " style="font-size: 13px">
+          <div class="col-12 pt-2" style="font-size: 13px">
             <div class="row">
               <div class="col-6  text-center">
-                <input type="image" src="/assets/img/accept.svg" style="width: 40px" (click)="acceptFriendsRequest()"/>
+                <input class="action-ico" type="image" src="/assets/img/accept.svg" (click)="acceptFriendsRequest()"/>
               </div>
               <div class="row-6  text-center">
-                <input type="image" src="/assets/img/reject.svg" style="width: 40px" (click)="rejectFriendsRequest()"/>
+                <input class="action-ico" type="image" src="/assets/img/reject.svg" (click)="rejectFriendsRequest()"/>
               </div>
             </div>
           </div>

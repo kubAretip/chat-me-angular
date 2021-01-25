@@ -107,3 +107,19 @@ a:hover {
 .mastfoot {
   color: rgba(255, 255, 255, .5);
 }
+
+
+.secondary-headlight {
+  font-size: 30px;
+}
+
+.secondary-headlight::after{
+  content: " family.";
+  animation: textanim 10s linear infinite;
+}
+
+@keyframes textanim  {
+    50%{
+      content: " friends."
+    }
+}

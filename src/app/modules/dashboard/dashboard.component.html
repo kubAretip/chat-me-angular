@@ -1,8 +1,7 @@
 <div role="alert" [ngClass]="isNotificationVisible ? 'notification':'notification-hide'" #notification>
   <span>{{notificationMessage}}</span>
 </div>
-<div class="row text-center shadow-lg p-3 mb-5 bg-white rounded" *ngIf="showDeleteFriendPrompt"
-     style="left: 0; right:0;margin: 0 auto;top:25%; position:absolute; z-index:1000; height: 250px;width: 300px">
+<div class="row text-center shadow-lg p-3 mb-5 bg-white rounded remove-friend-alert" *ngIf="showDeleteFriendPrompt">
   <div class="col-12">
     <span style="font-size: 20px">Are you sure you want to delete this friend?</span>
   </div>
@@ -20,21 +19,22 @@
   <div class="row fill shadow-lg p-3 mb-5 bg-white rounded">
     <div class="col-sm-4 chat-box-left">
       <div class="row chat-box-left-header">
-        <div class="col-sm-12" style="height: 100%; ">
-          <div class="row">
-            <div class="col-12">
+        <div class="col-sm-12 h-100">
+          <div class="row h-100">
+            <div class="col-12 h-100">
               <div *ngIf="isActiveFriendComponent">
                 <span class="left-header-text-user">Hello {{currentUser.firstName + ' ' + currentUser.lastName}}</span>
                 <span class="left-header-text-friends-code">Friends code: {{currentUser.friendRequestCode}}</span>
               </div>
-              <div *ngIf="isActiveFriendRequestComponent || isActiveAddFriendComponent || isActiveSettingsComponent">
-                <div class="row">
-                  <div class="col-6">
-                    <input type="image" src="/assets/img/back.svg" style="width: 50px" (click)="showFriendComponent()"/>
+              <div class="h-100"
+                   *ngIf="isActiveFriendRequestComponent || isActiveAddFriendComponent || isActiveSettingsComponent">
+                <div class="row h-100">
+                  <div class="col-4 m-auto">
+                    <input class="back-button" type="image" src="/assets/img/back.svg" (click)="showFriendComponent()"/>
                   </div>
-                  <div class="row-6" style="margin: auto">
+                  <div class="col-8 text-right m-auto">
                     <span class="left-header-friend-request-text"
-                          *ngIf="isActiveFriendRequestComponent">Friend requests</span>
+                          *ngIf="isActiveFriendRequestComponent">Friends request</span>
                     <span class="left-header-friend-request-text"
                           *ngIf="isActiveAddFriendComponent">Invite new friend</span>
                     <span class="left-header-friend-request-text"
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="row chat-box-left-list">
-        <div class="col-sm-12 friends-list-box" style=" height: 100%; overflow-y: auto;">
+        <div class="col-sm-12 friends-list-box h-100" style="overflow-y: auto;">
           <!-- Friend component-->
           <div *ngIf="isActiveFriendComponent && conversationList.length !== 0">
             <div *ngFor="let conversation of conversationList">
@@ -117,21 +117,21 @@
       </div>
       <div class="row chat-box-buttons">
         <div class="col-sm-12">
-          <div class="row" style="height: 100%">
-            <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" src="/assets/img/add_friend.svg" style="width: 40px"
+          <div class="row h-100" style="margin-right: 0">
+            <div class="col-3 text-center w-50 m-auto">
+              <input class="left-buttons-menu-ico" type="image" src="/assets/img/add_friend.svg"
                      (click)="showAddFriendComponent()"/>
             </div>
-            <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" src="/assets/img/friends_request.svg" style="width: 40px"
+            <div class="col-3 text-center w-50 m-auto">
+              <input class="left-buttons-menu-ico" type="image" src="/assets/img/friends_request.svg"
                      (click)="showFriendRequestComponent()"/>
             </div>
-            <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" src="/assets/img/setting_ico.svg" (click)="showSettingsComponent()"
-                     style="width: 40px"/>
+            <div class="col-3 text-center w-50 m-auto">
+              <input class="left-buttons-menu-ico" type="image" src="/assets/img/setting_ico.svg"
+                     (click)="showSettingsComponent()"/>
             </div>
-            <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" (click)="logout()" src="/assets/img/logout.svg" style="width: 40px"/>
+            <div class="col-3 text-center w-50 m-auto">
+              <input class="left-buttons-menu-ico" type="image" src="/assets/img/logout.svg" (click)="logout()"/>
             </div>
           </div>
         </div>
@@ -143,16 +143,16 @@
       </ng-container>
       <ng-template #chat>
         <div style="height: 7%;">
-          <div class="row" style="background-color: #ffffff;border-radius: 10px; padding: 5px"
-               *ngIf="currentConversation!==null">
-            <div class="col-2 " style="margin: auto; text-align: right;">
-              <img src="/assets/img/user_avatar.svg" alt="" style="max-width: 35px">
+          <div class="row chat-current-person-container" *ngIf="currentConversation!==null">
+            <div class="col-2 m-auto text-right">
+              <img src="/assets/img/user_avatar.svg" alt="">
             </div>
-            <div class="col-8" style="margin: auto; text-align: left">
-            <span
-              style="font-size: 20px;">{{currentConversation.recipient.firstName + ' ' + currentConversation.recipient.lastName}}</span>
+            <div class="col-8 m-auto text-left">
+              <span class="chat-current-person-text">
+                {{currentConversation.recipient.firstName + ' ' + currentConversation.recipient.lastName}}
+              </span>
             </div>
-            <div class="col-2 " style="margin: auto; text-align: right;">
+            <div class="col-2 m-auto text-right">
               <div class="btn-group dropleft">
                 <input class="dropdown-toggle" id="dropdownMenuButton" type="image" src="/assets/img/more.svg"
                        alt=""
@@ -166,18 +166,18 @@
         </div>
         <div class="row" style="height: 73%">
           <div class="col-sm-12 messages-container" #messageContainer (scroll)="onScrollMessages($event)">
-            <div class="row" style="height: 100%" *ngIf="currentConversation === null">
-              <div class="col-12 text-center" style=" margin: auto; width: 50%;">
+            <div class="row h-100" *ngIf="currentConversation === null">
+              <div class="col-12 text-center m-auto w-50">
                 <img src="/assets/img/begin_chat.svg" alt="" style="max-width: 50%;">
                 <br>
                 <br>
                 <span>Choice your friend and start chatting.</span>
               </div>
             </div>
-            <div *ngIf="currentConversation !== null" style="height: 100%">
-              <div *ngIf="messageList.length === 0" style="height: 100%">
-                <div class="row" style="height: 100%">
-                  <div class="col-12 text-center" style=" margin: auto; width: 50%;">
+            <div class="h-100" *ngIf="currentConversation !== null">
+              <div class="h-100" *ngIf="messageList.length === 0">
+                <div class="row h-100">
+                  <div class="col-12 text-center m-auto w-50">
                     <img src="/assets/img/no_message.svg" alt="" style="max-width: 50%;">
                     <br>
                     <span>Not found any message</span>
@@ -193,15 +193,16 @@
           </div>
         </div>
         <div class="row" style="height: 20%">
-          <div class="col-sm-12" style=" height: 100%" *ngIf="currentConversation !== null">
-            <div class="row" style="height: 100%; padding: 10px; margin: 0">
+          <div class="col-sm-12 h-100" *ngIf="currentConversation !== null">
+            <div class="row h-100 m-0" style="padding: 10px;">
               <div class="input-group mb-3">
-              <textarea class="form-control input-message" style="height: 100%;resize: none;"
+              <textarea class="form-control input-message h-100 send-message-textarea"
                         placeholder="Type a message"
                         aria-label="Type a message" aria-describedby="basic-addon2" #inputMessage
                         (keyup.enter)="sentMessage()"></textarea>
                 <div class="input-group-append">
-                  <input type="image" class="btn btn-outline-primary" src="/assets/img/send.svg" width="50">
+                  <input type="image" class="btn btn-outline-primary" src="/assets/img/send.svg" width="50"
+                         (click)="sentMessage()">
                 </div>
               </div>
             </div>
@@ -210,9 +211,9 @@
       </ng-template>
 
       <ng-template #settings>
-        <div class="row" style="height: 100%">
+        <div class="row h-100">
           <div class="col-sm-12 messages-container">
-            <div style="height: 100%">
+            <div class="h-100">
               <app-settings (onSettingsOperation)="showNotificationMessage($event)"></app-settings>
             </div>
           </div>

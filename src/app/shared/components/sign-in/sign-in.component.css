@@ -4,6 +4,8 @@
 
 .page-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .page-column {
@@ -12,6 +14,7 @@
 
 .login-pic {
   width: 30%;
+  min-width: 200px;
 }
 
 .login-main-text {

@@ -8,10 +8,12 @@
           </div>
           <div class="col-10 incoming-message-content">
             <div class="incoming-message-text">
-              <p class="shadow p-3 mb-5 rounded" style="overflow-wrap: break-word;">{{message.content}}</p>
+              <p class="shadow p-3 mb-5 rounded" style="overflow-wrap: break-word;">
+                {{message.content}}
+              </p>
             </div>
             <div class=" incoming-message-date">
-              {{message.time}}
+              <span>{{message.time}}</span>
             </div>
           </div>
         </div>
@@ -26,10 +28,12 @@
         <div class="row">
           <div class="col-12">
             <div class="outgoing-message-text">
-              <p class="shadow p-3 mb-5 rounded" style="overflow-wrap: break-word;">{{message.content}}</p>
+              <p class="shadow p-3 mb-5 rounded" style="overflow-wrap: break-word;">
+                {{message.content}}
+              </p>
             </div>
             <div class=" outgoing-message-date">
-              {{message.time}}
+              <span>{{message.time}}</span>
             </div>
           </div>
         </div>
