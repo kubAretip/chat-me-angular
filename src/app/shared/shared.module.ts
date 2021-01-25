@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NotFoundComponent} from './components/not-found/not-found.component';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -8,9 +9,10 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
   exports: [
     NotFoundComponent
   ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule
+    ]
 })
 export class SharedModule {
 }

@@ -1,0 +1,15 @@
+:host, .page-container {
+  height: 100%;
+}
+
+.page-text {
+  font-size: 35px;
+}
+
+.page-column {
+  text-align: center
+}
+
+.page-img {
+  width: 50%;
+}
