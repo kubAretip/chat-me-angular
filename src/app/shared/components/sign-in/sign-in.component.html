@@ -1,0 +1,39 @@
+<div class="d-flex align-items-center pt-5 flex-column page-container">
+  <div class="page-column">
+    <img src="/assets/img/login_theme.svg" alt="" class="login-pic"/>
+  </div>
+  <div class="page-column mt-5">
+    <span class="login-main-text">Sign in</span>
+  </div>
+  <div class="page-column mt-3" *ngIf="notificationMessage">
+    <div class="alert alert-primary pl-5 pr-5" role="alert">
+      <span class="notification-text">{{notificationMessage}}</span>
+    </div>
+  </div>
+  <div class="page-column mt-3">
+    <form [formGroup]="loginForm" (ngSubmit)="loginProcess()">
+      <div class="form-group">
+        <input type="text" class="form-control credential-input has-warning" id="login" placeholder="Login or email"
+               formControlName="login"/>
+        <small *ngIf="login.invalid && (login.dirty || login.touched)" class="form-text text-danger validation-text">
+          Login is required.
+        </small>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control credential-input" id="password" placeholder="Password"
+               formControlName="password"/>
+        <small *ngIf="password.invalid && (password.dirty || password.touched)"
+               class="form-text text-danger validation-text">
+          Password is required.
+        </small>
+      </div>
+      <div style="text-align: right">
+        <span class="sign-up-text">No account yet? <a routerLink="/register">Sign up!</a></span>
+      </div>
+      <button type="submit" class="btn btn-primary pl-5 pr-5 mt-4" [disabled]="loginForm.invalid">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="showLoginSpinner"></span>
+        Login
+      </button>
+    </form>
+  </div>
+</div>

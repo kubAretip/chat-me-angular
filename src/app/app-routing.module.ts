@@ -2,9 +2,10 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './modules/home/home.component';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
-import {SignUpComponent} from './modules/sign-up/sign-up.component';
+import {SignUpComponent} from './shared/components/sign-up/sign-up.component';
 import {DashboardComponent} from './modules/dashboard/dashboard.component';
 import {AuthGuard} from './shared/helpers/auth.guard';
+import {SignInComponent} from './shared/components/sign-in/sign-in.component';
 
 const routes: Routes = [
 
@@ -14,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: SignUpComponent
+    component: SignInComponent
   },
   {
     path: 'register',

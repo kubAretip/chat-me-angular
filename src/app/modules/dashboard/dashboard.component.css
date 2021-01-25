@@ -62,6 +62,15 @@
   resize: none;
 }
 
+.input-message:focus, .input-friend-code:focus {
+  outline: none !important;
+  border: 1px solid rgba(0, 207, 255, 0.82);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.31);
+}
+
+.input-friend-code {
+  height: 100%;
+}
 
 .chat-box-left {
   height: 100%;

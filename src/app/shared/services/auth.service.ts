@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {baseUrl} from '../../../environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../models/user';
 import {JwtHelperService} from '@auth0/angular-jwt';
@@ -31,7 +31,7 @@ export class AuthService {
   login(data): Observable<any> {
     const helper = new JwtHelperService();
 
-    return this.http.post(`${baseUrl}/authenticate`, data)
+    return this.http.post(`${baseUrl}/authenticate`, data, {headers: {'Accept-Language': 'en'}})
       .pipe(map(result => {
         const accessToken = JSON.parse(JSON.stringify(result)).access_token;
         const decodedToken = helper.decodeToken(accessToken);

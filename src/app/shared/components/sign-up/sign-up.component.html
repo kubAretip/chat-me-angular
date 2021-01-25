@@ -1,0 +1,99 @@
+<div class="d-flex align-items-center pt-5 flex-column page-container">
+  <div class="page-column">
+    <img src="/assets/img/registration_theme.svg" alt="" class="registration-pic"/>
+  </div>
+  <div class="page-column">
+    <span class="registration-main-text">Sign up</span>
+  </div>
+  <div class="page-column mt-2 align-items-center" *ngIf="notificationMessage">
+    <div class="alert alert-primary pl-5 pr-5" role="alert">
+      <span class="notification-text">{{notificationMessage}}</span>
+    </div>
+  </div>
+  <div class="page-column mt-2 pb-5">
+    <form [formGroup]="registrationForm" (ngSubmit)="processRegistration()">
+      <div class="form-row">
+        <div class="form-group col-md-6" style="text-align: left">
+          <label for="firstName">First name</label>
+          <input type="text" class="form-control registration-input" id="firstName" placeholder="First name"
+                 formControlName="firstName">
+          <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+            <small class="form-text text-danger" *ngIf="firstName.errors.required">
+              First name is required.
+            </small>
+          </div>
+        </div>
+        <div class="form-group col-md-6" style="text-align: left">
+          <label for="lastName">Last name</label>
+          <input type="text" class="form-control registration-input" id="lastName" placeholder="Last name"
+                 formControlName="lastName">
+          <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+            <small class="form-text text-danger" *ngIf="lastName.errors.required">
+              Last name is required.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" style="text-align: left">
+        <label for="login">Login</label>
+        <input type="text" class="form-control registration-input" id="login" placeholder="Login"
+               formControlName="login">
+        <div *ngIf="login.invalid && (login.dirty || login.touched)">
+          <small class="form-text text-danger" *ngIf="login.errors.required">
+            Login is required.
+          </small>
+        </div>
+      </div>
+      <div class="form-group" style="text-align: left">
+        <label for="address-email">Email</label>
+        <input type="email" class="form-control registration-input" id="address-email" placeholder="Email"
+               formControlName="email">
+        <div *ngIf="email.invalid && (email.dirty || email.touched)">
+          <small class="form-text text-danger" *ngIf="email.errors.required">
+            Email is required.
+          </small>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6" style="text-align: left">
+          <label for="password">Password</label>
+          <input type="password" class="form-control registration-input" id="password" placeholder="Password"
+                 formControlName="password">
+          <div *ngIf="password.invalid && (password.dirty || password.touched)">
+            <small class="form-text text-danger" *ngIf="password.errors.required">
+              Password is required.
+            </small>
+          </div>
+          <small class="form-text text-danger" *ngIf="passwordValidationError">
+            {{passwordValidationError}}
+          </small>
+        </div>
+        <div class="form-group col-md-6" style="text-align: left">
+          <label for="confirm-password">Confirm password</label>
+          <input type="password" class="form-control registration-input" id="confirm-password"
+                 placeholder="Confirm password" formControlName="confirmPassword">
+          <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
+            <small class="form-text text-danger" *ngIf="confirmPassword.errors.required">
+              Please confirm password.
+            </small>
+          </div>
+          <small class="form-text text-danger" *ngIf="confirmPasswordValidationError">
+            {{confirmPasswordValidationError}}
+          </small>
+        </div>
+      </div>
+      <div style="text-align: right">
+        <span class="sign-in-text">Already have an account? <a routerLink="/login">Sign in!</a></span>
+      </div>
+      <button type="submit" class="btn btn-primary pl-5 pr-5 mt-4" [disabled]="registrationForm.invalid">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+              *ngIf="showLoadingSpinner"></span>
+        Register now
+      </button>
+    </form>
+  </div>
+
+</div>
+
+
+

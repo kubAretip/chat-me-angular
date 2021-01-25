@@ -1,0 +1,55 @@
+:host, .page-container {
+  height: 100%;
+}
+
+.page-container {
+  display: flex;
+}
+
+.page-column {
+  text-align: center
+}
+
+.login-pic {
+  width: 30%;
+}
+
+.login-main-text {
+  font-size: 35px;
+}
+
+.sign-up-text {
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: .3s;
+}
+
+.validation-text {
+  text-align: left;
+}
+
+a, a:visited, a:active, a:link {
+  text-decoration: none;
+  color: #999;
+  font-size: 0.9rem;
+  transition: .3s;
+}
+
+a:hover {
+  color: #00B0FF;
+}
+
+
+.notification-text {
+  font-size: 15px;
+}
+
+.credential-input {
+  width: 250px;
+}
+
+.credential-input:focus {
+  outline: none !important;
+  border: 1px solid rgba(0, 207, 255, 0.82);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.31);
+}

@@ -84,7 +84,7 @@
           <div *ngIf="isActiveAddFriendComponent">
             <div class="row">
               <div class="input-group mb-3" style="padding: 5px">
-                <input type="text" class="form-control" style="height: 100%" placeholder="Friend code"
+                <input type="text" class="form-control input-friend-code" placeholder="Friend code"
                        aria-label="Friend code" aria-describedby="basic-addon2" #friendCode>
                 <div class="input-group-append">
                   <button class="btn btn-outline-primary" type="button" (click)="sendFriendRequest()">Send</button>
@@ -119,11 +119,11 @@
         <div class="col-sm-12">
           <div class="row" style="height: 100%">
             <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" src="/assets/img/add_friend_ico.svg" style="width: 40px"
+              <input type="image" src="/assets/img/add_friend.svg" style="width: 40px"
                      (click)="showAddFriendComponent()"/>
             </div>
             <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" src="/assets/img/friends_ico.svg" style="width: 40px"
+              <input type="image" src="/assets/img/friends_request.svg" style="width: 40px"
                      (click)="showFriendRequestComponent()"/>
             </div>
             <div class="col-3 text-center" style=" margin: auto; width: 50%;">
@@ -131,7 +131,7 @@
                      style="width: 40px"/>
             </div>
             <div class="col-3 text-center" style=" margin: auto; width: 50%;">
-              <input type="image" (click)="logout()" src="/assets/img/logout_ico.svg" style="width: 40px"/>
+              <input type="image" (click)="logout()" src="/assets/img/logout.svg" style="width: 40px"/>
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@
                         aria-label="Type a message" aria-describedby="basic-addon2" #inputMessage
                         (keyup.enter)="sentMessage()"></textarea>
                 <div class="input-group-append">
-                  <button class="btn btn-outline-primary" type="button" (click)="sentMessage()">Send</button>
+                  <input type="image" class="btn btn-outline-primary" src="/assets/img/send.svg" width="50">
                 </div>
               </div>
             </div>
