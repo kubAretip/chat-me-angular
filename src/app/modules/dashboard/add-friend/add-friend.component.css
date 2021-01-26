@@ -2,6 +2,12 @@
   border-bottom: 1px solid #c4c4c4;
 }
 
-.reject-ico{
-  width: 40px
+.reject-ico {
+  width: 40px;
+}
+
+.reject-ico:hover {
+  border-bottom: 1px solid rgba(0, 207, 255, 0.16);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.2);
+  border-radius: 50%;
 }

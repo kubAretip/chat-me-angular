@@ -59,6 +59,7 @@
 
 .send-message-textarea {
   resize: none;
+  border-color: #FBFBFB;
 }
 
 .chat-current-person-container {
@@ -82,8 +83,41 @@
 
 .input-message:focus, .input-friend-code:focus {
   outline: none !important;
-  border: 1px solid rgba(0, 207, 255, 0.82);
-  box-shadow: 0 0 10px rgba(0, 207, 255, 0.31);
+  border: 1px solid rgba(0, 207, 255, 0.16);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.2);
+}
+
+.send-button {
+  border-color: #FBFBFB;
+  outline: none !important;
+}
+
+.send-button:focus, .send-friend-request-button:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.nav-button:hover {
+  border: 1px solid rgba(0, 207, 255, 0.16);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.2);
+  border-radius: 25%;
+  padding: 2px;
+}
+
+.back-button {
+  width: 50px;
+}
+
+.back-button:hover {
+  padding: 2px;
+  border-bottom: 1px solid rgba(0, 207, 255, 0.16);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.2);
+  border-radius: 50%;
+}
+
+.nav-button, .back-button {
+  border: none;
+  outline: none;
 }
 
 .input-friend-code {
@@ -131,9 +165,6 @@
   display: block;
 }
 
-.back-button{
-  width: 50px;
-}
 
 .left-header-text-friends-code {
   font-size: 12px;

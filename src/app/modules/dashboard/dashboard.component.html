@@ -87,7 +87,8 @@
                 <input type="text" class="form-control input-friend-code" placeholder="Friend code"
                        aria-label="Friend code" aria-describedby="basic-addon2" #friendCode>
                 <div class="input-group-append">
-                  <button class="btn btn-outline-primary" type="button" (click)="sendFriendRequest()">Send</button>
+                  <input type="image" class="btn btn-outline-primary border send-friend-request-button"  (click)="sendFriendRequest()"
+                         src="/assets/img/letter.svg" width="60">
                 </div>
               </div>
             </div>
@@ -117,21 +118,22 @@
       </div>
       <div class="row chat-box-buttons">
         <div class="col-sm-12">
-          <div class="row h-100" style="margin-right: 0">
+          <div class="row h-100 mr-0">
             <div class="col-3 text-center w-50 m-auto">
-              <input class="left-buttons-menu-ico" type="image" src="/assets/img/add_friend.svg"
+              <input class="left-buttons-menu-ico nav-button" type="image" src="/assets/img/add_friend.svg"
                      (click)="showAddFriendComponent()"/>
             </div>
             <div class="col-3 text-center w-50 m-auto">
-              <input class="left-buttons-menu-ico" type="image" src="/assets/img/friends_request.svg"
+              <input class="left-buttons-menu-ico nav-button" type="image" src="/assets/img/new_friends_request.svg"
                      (click)="showFriendRequestComponent()"/>
             </div>
             <div class="col-3 text-center w-50 m-auto">
-              <input class="left-buttons-menu-ico" type="image" src="/assets/img/setting_ico.svg"
+              <input class="left-buttons-menu-ico nav-button" type="image" src="/assets/img/setting_ico.svg"
                      (click)="showSettingsComponent()"/>
             </div>
             <div class="col-3 text-center w-50 m-auto">
-              <input class="left-buttons-menu-ico" type="image" src="/assets/img/logout.svg" (click)="logout()"/>
+              <input class="left-buttons-menu-ico nav-button" type="image" src="/assets/img/logout.svg"
+                     (click)="logout()"/>
             </div>
           </div>
         </div>
@@ -154,7 +156,8 @@
             </div>
             <div class="col-2 m-auto text-right">
               <div class="btn-group dropleft">
-                <input class="dropdown-toggle" id="dropdownMenuButton" type="image" src="/assets/img/more.svg"
+                <input class="dropdown-toggle nav-button" id="dropdownMenuButton" type="image"
+                       src="/assets/img/more.svg"
                        alt=""
                        style="max-width: 35px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -201,7 +204,7 @@
                         aria-label="Type a message" aria-describedby="basic-addon2" #inputMessage
                         (keyup.enter)="sentMessage()"></textarea>
                 <div class="input-group-append">
-                  <input type="image" class="btn btn-outline-primary" src="/assets/img/send.svg" width="50"
+                  <input type="image" class="btn btn-outline-primary send-button" src="/assets/img/send.svg" width="50"
                          (click)="sentMessage()">
                 </div>
               </div>
