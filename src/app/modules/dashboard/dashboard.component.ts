@@ -101,7 +101,9 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   sentMessage() {
     let messageContent = this.inputMessage.nativeElement.value;
     // delete EOL
-    messageContent = messageContent.slice(0, -1);
+    if (messageContent.substr(messageContent.length - 1) === '\n') {
+      messageContent = messageContent.slice(0, -1);
+    }
     if (messageContent !== '' || 0 !== messageContent.length) {
       const message = {
         sender: this.authService.currentUserValue,
