@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 
@@ -13,10 +13,6 @@ export class SignUpComponent implements OnInit {
   showLoadingSpinner = false;
   notificationMessage = '';
   registrationForm: FormGroup;
-  confirmPasswordValidationError = '';
-  passwordValidationError = '';
-  emailValidationError = '';
-  loginValidationError = '';
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -31,7 +27,7 @@ export class SignUpComponent implements OnInit {
 
   private initRegistrationForm() {
     this.registrationForm = new FormGroup({
-      login: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
@@ -42,9 +38,9 @@ export class SignUpComponent implements OnInit {
 
 
   processRegistration() {
-    this.resetFormErrors();
+    this.resetNotificationError();
     if (!this.isConfirmPasswordAreTheSameAsPassword()) {
-      this.confirmPasswordValidationError = 'Passwords not match';
+      this.setViolationsError(this.confirmPassword, 'Passwords not match');
       return;
     }
 
@@ -52,7 +48,7 @@ export class SignUpComponent implements OnInit {
       this.showLoadingSpinner = true;
 
       this.authService.register({
-        login: this.login.value,
+        username: this.username.value,
         password: this.password.value,
         firstName: this.firstName.value,
         lastName: this.lastName.value,
@@ -68,21 +64,22 @@ export class SignUpComponent implements OnInit {
             if (error.field === 'password') {
               this.password.setValue('');
               this.confirmPassword.reset();
-              this.passwordValidationError = error.message;
-              this.password.setErrors({validation: true});
+              this.setViolationsError(this.password, error.message);
             }
             if (error.field === 'email') {
-              this.emailValidationError = error.message;
-              this.email.setErrors({validation: true});
+              this.setViolationsError(this.email, error.message);
             }
-            if (error.field === 'login') {
-              this.loginValidationError = 'Login can contains only letters and numbers';
-              this.login.setErrors({validation: true});
+            if (error.field === 'username') {
+              this.setViolationsError(this.username, error.message);
             }
-
+            if (error.field === 'firstName') {
+              this.setViolationsError(this.firstName, error.message);
+            }
+            if (error.field === 'lastName') {
+              this.setViolationsError(this.lastName, error.message);
+            }
           });
         }
-
         if (errorObject.status === 409) {
           this.notificationMessage = errorObject.error.detail;
         }
@@ -90,21 +87,24 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  resetFormErrors() {
-    this.confirmPasswordValidationError = '';
-    this.passwordValidationError = '';
-    this.emailValidationError = '';
-    this.loginValidationError = '';
-    this.notificationMessage = '';
+  setViolationsError(control: AbstractControl, error: string) {
+    if (control.getError('violations')) {
+      control.setErrors({violations: control.getError('violations') + '<br>' + error});
+    } else {
+      control.setErrors({violations: error});
+    }
   }
 
+  resetNotificationError() {
+    this.notificationMessage = '';
+  }
 
   isConfirmPasswordAreTheSameAsPassword() {
     return this.password.value === this.confirmPassword.value;
   }
 
-  get login() {
-    return this.registrationForm.get('login');
+  get username() {
+    return this.registrationForm.get('username');
   }
 
   get email() {
