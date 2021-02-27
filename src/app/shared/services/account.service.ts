@@ -6,13 +6,15 @@ import {User} from '../models/user';
 @Injectable({providedIn: 'root'})
 export class AccountService {
 
+  private authServiceUrl = '/auth-service';
+
   constructor(private http: HttpClient) {
   }
 
   activateUser(activationKey) {
     const params = new HttpParams()
       .set('data', activationKey);
-    return this.http.patch(`${baseUrl}/accounts/activate?${params.toString()}`, {});
+    return this.http.patch(`${baseUrl}` + this.authServiceUrl + `/users/activate?${params.toString()}`, {});
   }
 
   getUser() {
