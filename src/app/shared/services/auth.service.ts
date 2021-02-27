@@ -12,6 +12,7 @@ import {WsMessagesService} from './ws-messages.service';
 })
 export class AuthService {
 
+  private authServiceUrl = '/auth-service';
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
@@ -28,19 +29,20 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  login(data): Observable<any> {
+  login(credentialLogin, credentialPassword): Observable<any> {
     const helper = new JwtHelperService();
 
-    return this.http.post(`${baseUrl}/authenticate`, data, {headers: {'Accept-Language': 'en'}})
+    return this.http.post(`${baseUrl}` + this.authServiceUrl + `/authenticate`, {
+      username: credentialLogin,
+      password: credentialPassword
+    })
       .pipe(map(result => {
         const accessToken = JSON.parse(JSON.stringify(result)).access_token;
         const decodedToken = helper.decodeToken(accessToken);
         const user = {
-          login: decodedToken.sub,
-          id: decodedToken.subId
+          id: decodedToken.sub
         };
-        localStorage.setItem('token', accessToken);
-        localStorage.setItem('token_type', decodedToken.typ);
+        localStorage.setItem('access_token', accessToken);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
         return result;
@@ -48,12 +50,11 @@ export class AuthService {
   }
 
   register(data): Observable<any> {
-    return this.http.post(`${baseUrl}/accounts/register`, data);
+    return this.http.post(`${baseUrl}` + this.authServiceUrl + `/users`, data);
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('token_type');
+    localStorage.removeItem('access_token');
     localStorage.removeItem('user');
     this.wsMessagesService.disconnect();
     this.currentUserSubject.next(null);

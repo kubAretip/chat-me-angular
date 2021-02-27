@@ -7,8 +7,8 @@ export const environment = {
 
 };
 
-export const baseUrl = 'http://localhost:8080/api';
-export const wsBaseUrl = 'ws://localhost:8080/api/ws';
+export const baseUrl = 'http://localhost:8080';
+export const wsBaseUrl = 'ws://localhost:8080/messages-websocket-service/ws';
 
 /*
  * For easier debugging in development mode, you can import the following file

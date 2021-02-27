@@ -44,7 +44,7 @@ export class SignInComponent implements OnInit {
   loginProcess() {
     if (this.loginForm.valid) {
       this.showLoginSpinner = true;
-      this.authService.login(this.loginForm.value)
+      this.authService.login(this.login.value, this.password.value)
         .subscribe(result => {
           this.showLoginSpinner = false;
           this.router.navigate(['/dashboard']);
