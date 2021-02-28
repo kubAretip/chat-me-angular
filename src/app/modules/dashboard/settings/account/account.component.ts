@@ -2,6 +2,8 @@ import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@a
 import {User} from '../../../../shared/models/user';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {AccountService} from '../../../../shared/services/account.service';
+import {ChatProfile} from '../../../../shared/models/chat-profile';
+import {ChatService} from '../../../../shared/services/chat.service';
 
 @Component({
   selector: 'app-account',
@@ -16,23 +18,32 @@ export class AccountComponent implements OnInit {
   firstNameValidationError: string = null;
   lastNameValidationError: string = null;
   user = {} as User;
+  chatProfile = {} as ChatProfile;
 
   @Output() onChangeAccountInformationRequest: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private authService: AuthService,
-              private accountService: AccountService) {
+              private accountService: AccountService,
+              private chatService: ChatService) {
   }
 
   ngOnInit(): void {
-    this.accountService.getUser().subscribe(result => {
+    this.accountService.getUser(this.authService.currentUserValue.id).subscribe(result => {
       this.user = result;
     });
+
+    this.chatService.getChatProfile(this.authService.currentUserValue.id)
+      .subscribe(result => {
+        this.chatProfile = result;
+      });
+
   }
 
-  generateNewFriendCode() {
-    this.accountService.generateUserNewFriendCode().subscribe(result => {
-      this.user.friendRequestCode = result.friendRequestCode;
-    });
+  generateNewFriendsCode() {
+    this.chatService.generateNewFriendsCode(this.authService.currentUserValue.id)
+      .subscribe(result => {
+        this.chatProfile = result;
+      });
   }
 
   saveAccountsChanges() {

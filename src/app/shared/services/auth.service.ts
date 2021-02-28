@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
-import {baseUrl} from '../../../environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../models/user';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {WsMessagesService} from './ws-messages.service';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private authServiceUrl = '/auth-service';
+
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
@@ -26,13 +26,13 @@ export class AuthService {
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token');
   }
 
   login(credentialLogin, credentialPassword): Observable<any> {
     const helper = new JwtHelperService();
 
-    return this.http.post(`${baseUrl}` + this.authServiceUrl + `/authenticate`, {
+    return this.http.post(environment.baseApiUrl + environment.authServiceResource + `/authenticate`, {
       username: credentialLogin,
       password: credentialPassword
     })
@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   register(data): Observable<any> {
-    return this.http.post(`${baseUrl}` + this.authServiceUrl + `/users`, data);
+    return this.http.post(environment.baseApiUrl + environment.authServiceResource + `/users`, data);
   }
 
   logout() {

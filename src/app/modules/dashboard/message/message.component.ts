@@ -9,7 +9,7 @@ import {AuthService} from '../../../shared/services/auth.service';
 })
 export class MessageComponent implements OnInit, AfterViewInit {
 
-  currentUserId: number;
+  currentUserId: string;
 
   @Input('message')
   message: Message = null;

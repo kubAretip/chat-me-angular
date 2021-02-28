@@ -141,7 +141,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
 
   wsAfterConnected() {
     const that = this;
-    this.wsMessagesService.ws.subscribe('/user/' + this.authService.currentUserValue.id + '/queue/messages',
+    this.wsMessagesService.ws.subscribe('/topic/' + this.authService.currentUserValue.id + '.messages',
       // tslint:disable-next-line:only-arrow-functions
       function(message) {
         let conversationMessage: Message;
@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   private getUserInformation() {
-    this.accountService.getUser().subscribe(user => {
+    this.accountService.getUser(this.authService.currentUserValue.id).subscribe(user => {
       this.currentUser = user;
     });
   }
