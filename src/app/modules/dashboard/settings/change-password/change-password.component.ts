@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from '../../../../shared/services/account.service';
+import {AuthService} from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-change-password',
@@ -10,13 +11,11 @@ import {AccountService} from '../../../../shared/services/account.service';
 export class ChangePasswordComponent implements OnInit {
 
   changePasswordForm: FormGroup;
-  newPasswordValidationError = '';
-  currentPasswordValidationError = '';
-  confirmNewPasswordValidationError = '';
 
   @Output() onChangePasswordRequest: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService,
+              private authService: AuthService) {
 
   }
 
@@ -30,12 +29,11 @@ export class ChangePasswordComponent implements OnInit {
 
       if (this.newPassword.value !== this.confirmNewPassword.value) {
         this.newPassword.reset();
-        this.confirmNewPassword.setErrors({validation: true});
-        this.confirmNewPasswordValidationError = 'Password not match';
+        this.confirmNewPassword.setErrors({violations: 'Password not match'});
         return;
       }
 
-      this.accountService.changePassword(
+      this.accountService.changePassword(this.authService.currentUserValue.id,
         {
           currentPassword: this.currentPassword.value,
           newPassword: this.newPassword.value
@@ -52,8 +50,7 @@ export class ChangePasswordComponent implements OnInit {
               if (error.field === 'newPassword') {
                 this.newPassword.setValue('');
                 this.confirmNewPassword.reset();
-                this.newPassword.setErrors({validation: true});
-                this.newPasswordValidationError = error.message;
+                this.newPassword.setErrors({violations: error.message});
               }
             });
           }
@@ -61,8 +58,7 @@ export class ChangePasswordComponent implements OnInit {
           const messageDetailsError = errorObject.error.detail;
           if (messageDetailsError) {
             this.currentPassword.setValue('');
-            this.currentPassword.setErrors({validation: true});
-            this.currentPasswordValidationError = messageDetailsError;
+            this.currentPassword.setErrors({violations: messageDetailsError});
             this.newPassword.reset();
             this.confirmNewPassword.reset();
           }

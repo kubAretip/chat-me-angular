@@ -23,8 +23,9 @@ export class AccountService {
       this.userResource + '/' + userId);
   }
 
-  changePassword(newPassword) {
-    return this.http.patch(`${baseUrl}/accounts/change-password`, newPassword);
+  changePassword(userId: string, newPassword) {
+    return this.http.patch(environment.baseApiUrl + environment.authServiceResource +
+      this.userResource + '/' + userId + '/change-password', newPassword);
   }
 
   modifyAccountInformation(id: string, user: User) {
