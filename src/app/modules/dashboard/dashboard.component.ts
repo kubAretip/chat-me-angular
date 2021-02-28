@@ -283,14 +283,13 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   deleteFriend() {
-    // TODO - delete friend
-    // this.conversationService.deleteFriendConversation(this.currentFriendChat.id)
-    //   .subscribe(result => {
-    //     this.getUserFriendsChats();
-    //     this.showDeleteFriendPrompt = false;
-    //     this.currentFriendChat = null;
-    //     this.showNotificationMessage('Friend has been removed.');
-    //   });
+    this.friendChatService.deleteFriend(this.currentFriendChat.id, this.currentFriendChat.chatWith)
+      .subscribe(result => {
+        this.getUserFriendsChats();
+        this.showDeleteFriendPrompt = false;
+        this.currentFriendChat = null;
+        this.showNotificationMessage('Friend has been removed.');
+      });
   }
 
   cancelDeleteFriend() {
