@@ -13,7 +13,7 @@
               </p>
             </div>
             <div class=" incoming-message-date">
-              <span>{{message.time}}</span>
+              <span>{{message.time | date: 'medium' }}</span>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
               </p>
             </div>
             <div class=" outgoing-message-date">
-              <span>{{message.time}}</span>
+              <span>{{message.time | date: 'medium'}}</span>
             </div>
           </div>
         </div>
