@@ -1,5 +1,10 @@
 # ChatMeAngular
 
+### Info
+To run application with monolith backend plese switch to <b>master</b> branch. For microservice backend please chose <b>for_micro_backend branch</b>.
+* Monolith backend : https://github.com/kubAretip/chat-me
+* Microservice backend : https://github.com/kubAretip/spring-micro-websocket-chat
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.7.
 
 ## Development server
