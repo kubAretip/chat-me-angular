@@ -2,7 +2,7 @@
   <div class="col-8">
     <span>You sent friends request to</span>
     <br>
-    <span><b>{{friendRequest.recipient.firstName + ' ' + friendRequest.recipient.lastName}}</b></span>
+    <span><b>{{recipientUser.firstName + ' ' + recipientUser.lastName}}</b></span>
   </div>
   <div class="col-4 text-left">
     <input class="reject-ico" type="image" src="/assets/img/reject.svg" (click)="cancelFriendRequest()"/>

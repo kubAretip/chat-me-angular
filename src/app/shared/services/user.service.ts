@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {baseUrl, environment} from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {User} from '../models/user';
 
 @Injectable({providedIn: 'root'})
-export class AccountService {
+export class UserService {
 
   private userResource = '/users';
 
@@ -12,8 +12,7 @@ export class AccountService {
   }
 
   activateUser(activationKey) {
-    const params = new HttpParams()
-      .set('data', activationKey);
+    const params = new HttpParams().set('data', activationKey);
     return this.http.patch(environment.baseApiUrl + environment.authServiceResource +
       this.userResource + '/activate?' + params.toString(), {});
   }
@@ -28,7 +27,7 @@ export class AccountService {
       this.userResource + '/' + userId + '/change-password', newPassword);
   }
 
-  modifyAccountInformation(id: string, user: User) {
+  modifyUserInformation(id: string, user: User) {
     return this.http.patch<User>(environment.baseApiUrl + environment.authServiceResource +
       this.userResource + '/' + id, user);
   }

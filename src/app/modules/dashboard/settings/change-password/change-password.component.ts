@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AccountService} from '../../../../shared/services/account.service';
+import {UserService} from '../../../../shared/services/user.service';
 import {AuthService} from '../../../../shared/services/auth.service';
 
 @Component({
@@ -14,9 +14,8 @@ export class ChangePasswordComponent implements OnInit {
 
   @Output() onChangePasswordRequest: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private accountService: AccountService,
+  constructor(private accountService: UserService,
               private authService: AuthService) {
-
   }
 
   ngOnInit(): void {

@@ -1,18 +1,18 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Message} from '../../../shared/models/message';
+import {ChatMessage} from '../../../shared/models/chat-message';
 import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
-  selector: 'app-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  selector: 'app-chat-message',
+  templateUrl: './chat-message.component.html',
+  styleUrls: ['./chat-message.component.css']
 })
-export class MessageComponent implements OnInit, AfterViewInit {
+export class ChatMessageComponent implements OnInit, AfterViewInit {
 
   currentUserId: string;
 
   @Input('message')
-  message: Message = null;
+  message: ChatMessage = null;
 
   @Output()
   afterRenderMessage: EventEmitter<any> = new EventEmitter<any>();

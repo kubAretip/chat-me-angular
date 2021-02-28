@@ -1,5 +1,5 @@
 <div class="row chat"
-     [ngClass]="{'active-chat' :  conversation.id === currentConversationId, 'inactive-chat' : conversation.id !== currentConversationId}">
+     [ngClass]="{'active-chat' :  friendChat.id === currentFriendChat, 'inactive-chat' : friendChat.id !== currentFriendChat}">
   <div *ngIf="showNotification()" class="chat-notification"></div>
   <div class="col-2 text-center" style="position: relative; left: 5px;">
     <img src="/assets/img/user_avatar.svg" alt="" class="friend-ico">
@@ -7,7 +7,7 @@
   <div class="col-7">
     <div class="row">
       <div class="col-12" style="font-size: 22px">
-        {{conversation.recipient.firstName + ' ' + conversation.recipient.lastName}}
+        {{recipientUser.firstName + ' ' + recipientUser.lastName}}
       </div>
       <div class="col-12">
         <span *ngIf="lastMessage.content; else noMessage" class="last-message">

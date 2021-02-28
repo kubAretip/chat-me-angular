@@ -24,7 +24,9 @@
             <div class="col-12 h-100">
               <div *ngIf="isActiveFriendComponent">
                 <span class="left-header-text-user">Hello {{currentUser.firstName + ' ' + currentUser.lastName}}</span>
-                <span class="left-header-text-friends-code">Friends code: {{currentUser.friendRequestCode}}</span>
+                <span
+                  class="left-header-text-friends-code">Friends code: {{currentUserChatProfile.friendsRequestCode}}
+                </span>
               </div>
               <div class="h-100"
                    *ngIf="isActiveFriendRequestComponent || isActiveAddFriendComponent || isActiveSettingsComponent">
@@ -49,30 +51,30 @@
       <div class="row chat-box-left-list">
         <div class="col-sm-12 friends-list-box h-100" style="overflow-y: auto;">
           <!-- Friend component-->
-          <div *ngIf="isActiveFriendComponent && conversationList.length !== 0">
-            <div *ngFor="let conversation of conversationList">
-              <app-friend [conversation]="conversation"
-                          [isNewMessage]="isNewMessage"
-                          [onClickComponent]="clickFriendComponent"
-                          (click)="enterConversation(conversation.id)"></app-friend>
+          <div *ngIf="isActiveFriendComponent && friendsChats.length !== 0">
+            <div *ngFor="let friendChat of friendsChats">
+              <app-friend-chat [conversation]="friendChat"
+                               [isNewMessage]="isNewMessage"
+                               [onClickComponent]="clickFriendComponent"
+                               (click)="enterFriendChat(friendChat.id)"></app-friend-chat>
             </div>
           </div>
           <div class="text-center" style="margin-top: 40%;"
-               *ngIf="isActiveFriendComponent && conversationList.length === 0">
+               *ngIf="isActiveFriendComponent && friendsChats.length === 0">
             <img src="/assets/img/friend_theme.svg" style="max-width: 75%">
             <br><br>
             <span style="font-size: 20px"><b>You don't have any friends</b></span>
           </div>
           <!-- -->
           <!-- Friend request component-->
-          <div *ngIf="isActiveFriendRequestComponent && receivedFriendsRequest.length !== 0">
-            <div *ngFor="let friendsRequest of receivedFriendsRequest">
-              <app-friend-request [friendRequest]="friendsRequest"
-                                  (friendsRequestReply)="onReplyFriendsRequest($event)"></app-friend-request>
+          <div *ngIf="isActiveFriendRequestComponent && receivedFriendRequests.length !== 0">
+            <div *ngFor="let friendsRequest of receivedFriendRequests">
+              <app-received-friend-request [friendRequest]="friendsRequest"
+                                           (friendsRequestReply)="onReplyFriendsRequest($event)"></app-received-friend-request>
             </div>
           </div>
           <div class="text-center" style="margin-top: 40%;"
-               *ngIf="isActiveFriendRequestComponent && receivedFriendsRequest.length === 0">
+               *ngIf="isActiveFriendRequestComponent && receivedFriendRequests.length === 0">
             <img src="/assets/img/sad_blue.svg" style="max-width: 75%">
             <br><br>
             <span style="font-size: 20px"><b>No new requests</b></span>
@@ -80,26 +82,27 @@
             <span>When people send you friend requests, they'll appear here.</span>
           </div>
           <!-- -->
-          <!-- Add friend component-->
+          <!-- Add friend-chat component-->
           <div *ngIf="isActiveAddFriendComponent">
             <div class="row">
               <div class="input-group mb-3" style="padding: 5px">
                 <input type="text" class="form-control input-friend-code" placeholder="Friend code"
                        aria-label="Friend code" aria-describedby="basic-addon2" #friendCode>
                 <div class="input-group-append">
-                  <input type="image" class="btn btn-outline-primary border send-friend-request-button"  (click)="sendFriendRequest()"
+                  <input type="image" class="btn btn-outline-primary border send-friend-request-button"
+                         (click)="sendFriendRequest()"
                          src="/assets/img/letter.svg" width="60">
                 </div>
               </div>
             </div>
-            <div *ngIf="isActiveAddFriendComponent && sentFriendsRequest.length !==0">
-              <div *ngFor="let friendRequest of sentFriendsRequest">
-                <app-add-friend [friendsRequest]="friendRequest"
-                                (friendsRequestHasDeleted)="onDeletedFriendsRequest($event)"></app-add-friend>
+            <div *ngIf="isActiveAddFriendComponent && sentFriendRequests.length !==0">
+              <div *ngFor="let friendRequest of sentFriendRequests">
+                <app-new-friend-request [friendRequest]="friendRequest"
+                                        (friendsRequestHasDeleted)="onDeletedFriendsRequest($event)"></app-new-friend-request>
               </div>
             </div>
             <div class="text-center" style="margin-top: 40%;"
-                 *ngIf="isActiveAddFriendComponent && sentFriendsRequest.length === 0">
+                 *ngIf="isActiveAddFriendComponent && sentFriendRequests.length === 0">
               <img src="/assets/img/empty_add_friend.svg" style="max-width: 75%">
               <br><br>
               <span style="font-size: 20px"><b>No sent friends request</b></span>
@@ -145,13 +148,13 @@
       </ng-container>
       <ng-template #chat>
         <div style="height: 7%;">
-          <div class="row chat-current-person-container" *ngIf="currentConversation!==null">
+          <div class="row chat-current-person-container" *ngIf="currentFriendChat!==null">
             <div class="col-2 m-auto text-right">
               <img src="/assets/img/user_avatar.svg" alt="">
             </div>
             <div class="col-8 m-auto text-left">
               <span class="chat-current-person-text">
-                {{currentConversation.recipient.firstName + ' ' + currentConversation.recipient.lastName}}
+                {{currentRecipientUser.firstName + ' ' + currentRecipientUser.lastName}}
               </span>
             </div>
             <div class="col-2 m-auto text-right">
@@ -169,7 +172,7 @@
         </div>
         <div class="row" style="height: 73%">
           <div class="col-sm-12 messages-container" #messageContainer (scroll)="onScrollMessages($event)">
-            <div class="row h-100" *ngIf="currentConversation === null">
+            <div class="row h-100" *ngIf="currentFriendChat === null">
               <div class="col-12 text-center m-auto w-50">
                 <img src="/assets/img/begin_chat.svg" alt="" style="max-width: 50%;">
                 <br>
@@ -177,7 +180,7 @@
                 <span>Choice your friend and start chatting.</span>
               </div>
             </div>
-            <div class="h-100" *ngIf="currentConversation !== null">
+            <div class="h-100" *ngIf="currentFriendChat !== null">
               <div class="h-100" *ngIf="messageList.length === 0">
                 <div class="row h-100">
                   <div class="col-12 text-center m-auto w-50">
@@ -189,14 +192,15 @@
               </div>
               <div *ngIf="messageList.length !== 0">
                 <div *ngFor="let message of messageList">
-                  <app-message [message]="message" (afterRenderMessage)="scrollChatMessage()" #appMessage></app-message>
+                  <app-chat-message [message]="message" (afterRenderMessage)="scrollChatMessage()"
+                                    #appMessage></app-chat-message>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="row" style="height: 20%">
-          <div class="col-sm-12 h-100" *ngIf="currentConversation !== null">
+          <div class="col-sm-12 h-100" *ngIf="currentFriendChat !== null">
             <div class="row h-100 m-0" style="padding: 10px;">
               <div class="input-group mb-3">
               <textarea class="form-control input-message h-100 send-message-textarea"

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AccountService} from '../../services/account.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -17,7 +17,7 @@ export class SignInComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private accountService: AccountService,
+              private accountService: UserService,
               private activatedRoute: ActivatedRoute,) {
     if (this.authService.currentUserValue) {
       this.router.navigate(['/dashboard']);

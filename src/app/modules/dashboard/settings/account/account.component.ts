@@ -1,9 +1,10 @@
 import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {User} from '../../../../shared/models/user';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {AccountService} from '../../../../shared/services/account.service';
+import {UserService} from '../../../../shared/services/user.service';
 import {ChatProfile} from '../../../../shared/models/chat-profile';
-import {ChatService} from '../../../../shared/services/chat.service';
+import {ChatProfileService} from '../../../../shared/services/chat-profile.service';
+
 
 @Component({
   selector: 'app-account',
@@ -23,8 +24,8 @@ export class AccountComponent implements OnInit {
   @Output() onChangeAccountInformationRequest: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private authService: AuthService,
-              private accountService: AccountService,
-              private chatService: ChatService) {
+              private accountService: UserService,
+              private chatProfileService: ChatProfileService) {
   }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class AccountComponent implements OnInit {
       this.user = result;
     });
 
-    this.chatService.getChatProfile(this.authService.currentUserValue.id)
+    this.chatProfileService.getChatProfile(this.authService.currentUserValue.id)
       .subscribe(result => {
         this.chatProfile = result;
       });
@@ -40,7 +41,7 @@ export class AccountComponent implements OnInit {
   }
 
   generateNewFriendsCode() {
-    this.chatService.generateNewFriendsCode(this.authService.currentUserValue.id)
+    this.chatProfileService.generateNewFriendsCode(this.authService.currentUserValue.id)
       .subscribe(result => {
         this.chatProfile = result;
       });
@@ -48,7 +49,7 @@ export class AccountComponent implements OnInit {
 
   saveAccountsChanges() {
 
-    this.accountService.modifyAccountInformation(this.authService.currentUserValue.id,
+    this.accountService.modifyUserInformation(this.authService.currentUserValue.id,
       {
         firstName: this.firstName.nativeElement.value,
         lastName: this.lastName.nativeElement.value

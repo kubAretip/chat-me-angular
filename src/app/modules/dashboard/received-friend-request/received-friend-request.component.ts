@@ -1,13 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FriendRequest} from '../../../shared/models/friend-request';
-import {FriendService} from '../../../shared/services/friend.service';
+import {FriendRequestService} from '../../../shared/services/friend-request.service';
+import {UserService} from '../../../shared/services/user.service';
+import {User} from '../../../shared/models/user';
 
 @Component({
-  selector: 'app-friend-request',
-  templateUrl: './friend-request.component.html',
-  styleUrls: ['./friend-request.component.css']
+  selector: 'app-received-friend-request',
+  templateUrl: './received-friend-request.component.html',
+  styleUrls: ['./received-friend-request.component.css']
 })
-export class FriendRequestComponent implements OnInit {
+export class ReceivedFriendRequestComponent implements OnInit {
+
+  senderUser = {} as User;
 
   @Input('friendRequest')
   friendRequest: FriendRequest;
@@ -15,11 +19,15 @@ export class FriendRequestComponent implements OnInit {
   @Output()
   friendsRequestReply: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private friendService: FriendService) {
+  constructor(private friendService: FriendRequestService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
-
+    this.userService.getUser(this.friendRequest.sender.userId)
+      .subscribe(sender => {
+        this.senderUser = sender;
+      });
   }
 
   acceptFriendsRequest() {
@@ -35,4 +43,5 @@ export class FriendRequestComponent implements OnInit {
         this.friendsRequestReply.emit('Friends request has been rejected');
       });
   }
+
 }

@@ -5,7 +5,7 @@ import {ChatProfile} from '../models/chat-profile';
 
 
 @Injectable({providedIn: 'root'})
-export class ChatService {
+export class ChatProfileService {
 
   private chatProfileResource = '/chat-profiles';
 
@@ -17,11 +17,8 @@ export class ChatService {
   }
 
   generateNewFriendsCode(userId: string) {
-    return this.http.patch<ChatProfile>(environment.baseApiUrl +
-      environment.chatServiceResource +
-      this.chatProfileResource +
-      '/' + userId +
-      '/new-friends-request-code', {});
+    return this.http.patch<ChatProfile>(environment.baseApiUrl + environment.chatServiceResource +
+      this.chatProfileResource + '/' + userId + '/new-friends-request-code', {});
   }
 
 }

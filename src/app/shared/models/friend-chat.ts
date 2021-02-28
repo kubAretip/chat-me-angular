@@ -1,8 +1,8 @@
 import {ChatProfile} from './chat-profile';
 
-export class FriendRequest {
+export class FriendChat {
   id: number;
-  sender: ChatProfile;
+  seder: ChatProfile;
   recipient: ChatProfile;
-  sentTime: string;
+  chatWith: number;
 }

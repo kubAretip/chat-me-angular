@@ -1,18 +1,22 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
-import {ConversationService} from '../../shared/services/conversation.service';
 import {first} from 'rxjs/operators';
-import {Conversation} from '../../shared/models/conversation';
-import {MessageService} from '../../shared/services/message.service';
-import {Message} from '../../shared/models/message';
+import {ChatMessageService} from '../../shared/services/chat-message.service';
+import {ChatMessage} from '../../shared/models/chat-message';
 import {WsMessagesService} from '../../shared/services/ws-messages.service';
 import {AfterWebSocketConnected} from '../../shared/helpers/after-web-socket-connected';
-import {AccountService} from '../../shared/services/account.service';
+import {UserService} from '../../shared/services/user.service';
 import {User} from '../../shared/models/user';
-import {FriendService} from '../../shared/services/friend.service';
+import {FriendRequestService} from '../../shared/services/friend-request.service';
 import {FriendRequest} from '../../shared/models/friend-request';
 import {Subject} from 'rxjs';
+import {ChatProfile} from '../../shared/models/chat-profile';
+import {FriendChatService} from '../../shared/services/friend-chat.service';
+import {FriendChat} from '../../shared/models/friend-chat';
+import {ChatProfileService} from '../../shared/services/chat-profile.service';
+import {ChatMessagesStatus} from '../../shared/enum/chat-messages-status';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -27,52 +31,55 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   @ViewChild('messageContainer') messageContainer: ElementRef;
   @ViewChild('appMessage') appMessage: ElementRef;
 
-  isNewMessage: Subject<Message> = new Subject();
+  isNewMessage: Subject<ChatMessage> = new Subject();
   clickFriendComponent: Subject<number> = new Subject();
-
+  currentUser = {} as User;
+  currentUserChatProfile = {} as ChatProfile;
+  receivedFriendRequests: FriendRequest[] = [];
+  sentFriendRequests: FriendRequest[] = [];
+  currentRecipientUser = {} as User;
   notificationMessage = '';
-
   isActiveFriendComponent = true;
   isActiveFriendRequestComponent = false;
   isActiveAddFriendComponent = false;
   isActiveSettingsComponent = false;
   showDeleteFriendPrompt = false;
   isNotificationVisible = false;
-  sentFriendsRequest: FriendRequest[] = [];
-  currentUser = {} as User;
-  receivedFriendsRequest: FriendRequest[] = [];
-  conversationList: Conversation[] = [];
-  messageList: Message[] = [];
-  currentConversation: Conversation = null;
+  friendsChats: FriendChat[] = [];
+  messageList: ChatMessage[] = [];
+  currentFriendChat: FriendChat = null;
   scrollDivMessagePosition: number = null;
   private shouldScrollToBottomAfterSendMessage = false;
   private audio = new Audio();
 
   constructor(private authService: AuthService,
               private router: Router,
-              private conversationService: ConversationService,
-              private messageService: MessageService,
+              private chatMessageService: ChatMessageService,
               private wsMessagesService: WsMessagesService,
-              private accountService: AccountService,
-              private friendService: FriendService) {
+              private userService: UserService,
+              private friendRequestService: FriendRequestService,
+              private chatProfileService: ChatProfileService,
+              private friendChatService: FriendChatService) {
     wsMessagesService.connect(authService.getToken(), this);
     this.initAudioNotification();
   }
 
   ngOnInit(): void {
-    this.getUserConversations();
+    this.getUserFriendsChats();
     this.getUserInformation();
+    this.getUserChatProfile();
   }
 
-  private getUserConversations() {
-    this.conversationService.getConversation().pipe(first())
+  private getUserFriendsChats() {
+    this.friendChatService.getFriendsChats().pipe(first())
       .subscribe(result => {
-        this.conversationList = result;
+        this.friendsChats = result;
       });
   }
 
   getPreviousMessages() {
-    this.messageService.getPreviousMessages(10, this.currentConversation.id, this.messageList[0].time)
+    this.chatMessageService.getPreviousMessages(10, this.currentFriendChat.id, this.currentFriendChat.chatWith,
+      new Date(this.messageList[0].time).toISOString())
       .subscribe(result => {
         result.forEach(message => {
           this.messageList.unshift(message);
@@ -85,16 +92,22 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     this.router.navigate(['/']);
   }
 
-  enterConversation(conversationId) {
-    this.currentConversation = this.conversationList.filter(value => value.id === conversationId)[0];
-    this.getInitialMessages(conversationId);
-    this.clickFriendComponent.next(conversationId);
+  enterFriendChat(friendChatId: number) {
+    this.currentFriendChat = this.friendsChats.filter(value => value.id === friendChatId)[0];
+    this.getInitialMessages(this.currentFriendChat.id, this.currentFriendChat.chatWith);
+    this.userService.getUser(this.currentFriendChat.recipient.userId)
+      .subscribe(recipient => {
+        this.currentRecipientUser = recipient;
+      });
+    this.clickFriendComponent.next(friendChatId);
   }
 
-  getInitialMessages(conversationId) {
-    this.messageService.getLastMessages(10, conversationId).pipe(first())
-      .subscribe(result => {
-        this.messageList = result;
+
+  getInitialMessages(friendChatId: number, friendChatWithId: number) {
+    this.chatMessageService.getLastMessages(10, friendChatId, friendChatWithId).pipe(first())
+      .subscribe(lastChatMessages => {
+        lastChatMessages.sort((m1, m2) => m1.time.localeCompare(m2.time));
+        this.messageList = lastChatMessages;
       });
   }
 
@@ -106,16 +119,17 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     }
     if (messageContent !== '' || 0 !== messageContent.length) {
       const message = {
-        sender: this.authService.currentUserValue,
-        recipient: this.currentConversation.recipient,
+        friendChat: this.currentFriendChat.id,
+        sender: this.authService.currentUserValue.id,
+        recipient: this.currentFriendChat.recipient.userId,
         content: messageContent,
-        conversationId: this.currentConversation.id,
-        time: new Date().toLocaleString().replace(',', '')
-      } as Message;
+        status: ChatMessagesStatus.received,
+        time: new Date().toISOString()
+      } as ChatMessage;
       this.messageList.push(message);
       this.wsMessagesService.sendMessage(message);
       this.inputMessage.nativeElement.value = '';
-      message.messageStatus = 'DELIVERED';
+
       this.isNewMessage.next(message);
       this.shouldScrollToBottomAfterSendMessage = true;
     } else {
@@ -125,7 +139,7 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   scrollChatMessage() {
-    // scroll to bottom after send message
+    // scroll to bottom after send chat-message
     if (this.shouldScrollToBottomAfterSendMessage) {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
       this.shouldScrollToBottomAfterSendMessage = false;
@@ -142,26 +156,30 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   wsAfterConnected() {
     const that = this;
     this.wsMessagesService.ws.subscribe('/topic/' + this.authService.currentUserValue.id + '.messages',
-      // tslint:disable-next-line:only-arrow-functions
-      function(message) {
-        let conversationMessage: Message;
-        conversationMessage = JSON.parse(message.body);
-        if (that.currentConversation !== null && conversationMessage.conversationId === that.currentConversation.conversationWithId) {
-          that.messageService.markMessageAsDelivered(that.currentConversation.conversationWithId).subscribe(result => {
-            conversationMessage.messageStatus = 'DELIVERED';
-            that.messageList.push(conversationMessage);
+      message => {
+        let chatMessage: ChatMessage;
+        chatMessage = JSON.parse(message.body);
+        if (that.currentFriendChat !== null && chatMessage.friendChat === that.currentFriendChat.chatWith) {
+          that.chatMessageService.markMessageAsDelivered(that.currentFriendChat.chatWith).subscribe(result => {
+            chatMessage.status = ChatMessagesStatus.delivered;
+            that.messageList.push(chatMessage);
           });
         } else {
-          that.audio.play();
+          that.audio.play()
+            .then(_ => {
+              // sound effect started
+            }).catch(error => {
+            // empty
+          });
         }
-        that.isNewMessage.next(conversationMessage);
+        that.isNewMessage.next(chatMessage);
       });
   }
 
   showFriendRequestComponent() {
-    this.friendService.getReceivedFriendRequest()
+    this.friendRequestService.getReceivedFriendRequests()
       .subscribe(result => {
-        this.receivedFriendsRequest = result;
+        this.receivedFriendRequests = result;
         this.isActiveFriendRequestComponent = true;
         this.isActiveFriendComponent = false;
         this.isActiveAddFriendComponent = false;
@@ -174,14 +192,15 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     this.isActiveFriendRequestComponent = false;
     this.isActiveAddFriendComponent = false;
     this.isActiveSettingsComponent = false;
-    this.getUserConversations();
+    this.getUserFriendsChats();
     this.getUserInformation();
+    this.getUserChatProfile();
   }
 
   showAddFriendComponent() {
-    this.friendService.getSentFriendsRequest()
+    this.friendRequestService.getSentFriendRequests()
       .subscribe(result => {
-        this.sentFriendsRequest = result;
+        this.sentFriendRequests = result;
         this.isActiveAddFriendComponent = true;
         this.isActiveFriendRequestComponent = false;
         this.isActiveFriendComponent = false;
@@ -194,22 +213,29 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
     this.isActiveFriendRequestComponent = false;
     this.isActiveAddFriendComponent = false;
     this.isActiveSettingsComponent = true;
-    this.currentConversation = null;
+    this.currentFriendChat = null;
   }
 
   private getUserInformation() {
-    this.accountService.getUser(this.authService.currentUserValue.id).subscribe(user => {
+    this.userService.getUser(this.authService.currentUserValue.id).subscribe(user => {
       this.currentUser = user;
     });
+  }
+
+  private getUserChatProfile() {
+    this.chatProfileService.getChatProfile(this.authService.currentUserValue.id)
+      .subscribe(userChatProfile => {
+        this.currentUserChatProfile = userChatProfile;
+      });
   }
 
   sendFriendRequest() {
     let invitationCode = this.friendCode.nativeElement.value;
     invitationCode = invitationCode.replace(/\s/g, '');
     if (invitationCode.length !== 0) {
-      this.friendService.postCreateNewFriendRequest(invitationCode)
+      this.friendRequestService.postCreateNewFriendRequest(invitationCode)
         .subscribe(result => {
-          this.sentFriendsRequest.push(result);
+          this.sentFriendRequests.push(result);
           this.showNotificationMessage('We send a new friends request.');
         }, errorObject => {
           if (errorObject.status === 404 || errorObject.status === 400 || errorObject.status === 409) {
@@ -257,13 +283,14 @@ export class DashboardComponent implements OnInit, AfterWebSocketConnected {
   }
 
   deleteFriend() {
-    this.conversationService.deleteFriendConversation(this.currentConversation.id)
-      .subscribe(result => {
-        this.getUserConversations();
-        this.showDeleteFriendPrompt = false;
-        this.currentConversation = null;
-        this.showNotificationMessage('Friend has been removed.');
-      });
+    // TODO - delete friend
+    // this.conversationService.deleteFriendConversation(this.currentFriendChat.id)
+    //   .subscribe(result => {
+    //     this.getUserFriendsChats();
+    //     this.showDeleteFriendPrompt = false;
+    //     this.currentFriendChat = null;
+    //     this.showNotificationMessage('Friend has been removed.');
+    //   });
   }
 
   cancelDeleteFriend() {
